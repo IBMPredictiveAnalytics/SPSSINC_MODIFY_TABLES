@@ -1,11 +1,13 @@
 # SPSSINC MODIFY TABLES
 ## Modify the appearance of pivot tables.
- This procedure allows you to modify the appearance of dat  a cells and row and column labels. You can modify text style, text co  lor or background color. You can also set column widths or the width   of row labels and you can hide specified rows or columns.
+ This procedure allows you to modify the appearance of data cells and row and column labels. You can modify text style, text color or background color. You can also set column widths or the width of row labels and you can hide specified rows or columns.
 
 ---
 Requirements
 ----
-- IBM SPSS Statistics 18 or later
+- IBM SPSS Statistics 18 or later and the corresponding IBM SPSS Statistics-Integration Plug-in for Python.
+
+Note: For users with IBM SPSS Statistics versions 19, 20, or 21, the SPSSINC MODIFY TABLES extension is installed as part of IBM SPSS Statistics-Essentials for Python. For users with IBM SPSS Statistics version 22 or higher, consider using the built-in OUTPUT MODIFY command.
 
 ---
 Installation intructions
