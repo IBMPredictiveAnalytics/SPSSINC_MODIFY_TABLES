@@ -3,7 +3,7 @@
 # *
 # * IBM SPSS Products: Statistics Common
 # *
-# * (C) Copyright IBM Corp. 1989, 2014
+# * (C) Copyright IBM Corp. 1989, 2015
 # *
 # * US Government Users Restricted Rights - Use, duplication or disclosure
 # * restricted by GSA ADP Schedule Contract with IBM Corp. 
@@ -15,7 +15,11 @@
 It delegates the implementation to the modifytables.py module."""
 
 __author__ = "SPSS, JKP"
-__version__ = "1.4.1"
+__version__ = "1.4.2"
+
+# history
+# 07-jan-2015 add countinvis keyword
+# 25-nov-2015 add significance keywords
 
 
 from extension import Template, Syntax, processcmd
@@ -201,6 +205,11 @@ def Run(args):
         Template("LEVEL", subc="", ktype="int", var= "level"),
         Template("HIDE", subc="", ktype="bool", var="hide", islist=False),
         Template("PRINTLABELS", subc="", ktype="bool", var="printlabels"),
+        Template("COUNTINVIS", subc="", ktype="bool", var="countinvis"),
+        Template("SIGCELLS", subc="", ktype="str", var="sigcells"),
+        Template("SIGLEVELS", subc="", ktype="str", var="siglevels",
+            vallist=["both", "upper", "lower"]),
+        
         Template("WIDTHS", subc="WIDTHS", ktype="int", var="widths", vallist=(0,), islist=True),
         Template("ROWLABELS", subc="WIDTHS", ktype="str", var="rowlabels", islist=True),
         Template("ROWLABELWIDTHS", subc="WIDTHS", ktype="int", var="rowlabelwidths", islist=True),
@@ -210,6 +219,7 @@ def Run(args):
         Template("BACKGROUNDCOLOR", subc="STYLES", ktype="int", var="bgcolor", vallist=(0, 255), islist=True),
         Template("APPLYTO", subc="STYLES", ktype="literal", var="applyto", islist=False),
         Template("CUSTOMFUNCTION", subc="STYLES", ktype="literal", var="customfunction", islist=True),
+        
         Template("HELP", subc="", ktype="bool")])
 
     # A HELP subcommand overrides all else

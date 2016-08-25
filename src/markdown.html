@@ -24,6 +24,8 @@
 <div class="syntax">
 <p>SPSSINC MODIFY TABLES SUBTYPE=<em>&ldquo;list of subtypes&rdquo;</em> 
 SELECT=<em>list of columns or rows to operate on</em><sup>&#42;</sup><br/>
+SIGCELLS=ALLSIG or <em>pattern</em></br>
+SIGLEVELS=BOTH<sup>&#42;&#42;</sup> or UPPER or LOWER</br>
 PROCESS=PRECEDING<sup>&#42;&#42;</sup> or ALL<br/>
 DIMENSION=COLUMNS<sup>&#42;&#42;</sup> or ROWS<br/>
 LEVEL=<em>number</em><br/>
@@ -42,7 +44,7 @@ CUSTOMFUNCTION=&ldquo;<em>module.function</em>&rdquo; &hellip;<br/>
 TLOOK=&ldquo;<em>filespec</em>&rdquo;<br/>
 APPLYTO=BOTH<sup>&#42;&#42;</sup> or LABELS or DATACELLS or <em>True/False expression</em></p>
 
-<p>/HELP].</p>
+<p>/HELP</p>
 
 <p><sup>&#42;</sup> Required<br/>
 <sup>&#42;&#42;</sup> Default</p>
@@ -117,6 +119,42 @@ DIMENSION=ROWS causes rows to be operated on.</p>
 be combined with any other specification and is assumed if no width or
 styles are specified.</p>
 
+<p><strong>SIGLEVELS</strong>
+This keyword narrows the selection made on the main dialog
+to those cells that meet the significance criteria specified here.
+In most cases, the significance criteria would be used with the "&lt;&lt;ALL>>" selection specification, but if there is a subset selected there,
+the significance specifications are applied within that.
+</p>
+<p>This keyword applies only to Statistics version
+24 or later and to output from Custom Tables (CTABLES) where significance
+markers are shown in the main table and are the simple (not APA) type.</p>
+
+<p><strong>ALLSIG</strong> selects all cells with any significance marker.  Significance markers are special letter codes that appear in the cell</p>
+<p>Alternatively, you can specify the specific significance markers to be selected by
+entering a significance pattern.  The pattern can be a simple list of the column markers.
+For example, "AB" would select only cells where columns lettered A or B are listed as significantly
+different.  The letter codes are shown in the column headers when significance results are merged rather than being shown in a separate table.  You might use this when
+you want to focus on a few specific categories.<p>
+
+<p>Subtables  across the columns occur when the column dimension
+has a nested specification such as job category within gender (gender > jobcat), or when there are multiple categorical variables stacked in that dimension (jobcat + gender).
+You can further specify which subtables the selection applies
+to by listing the subtable numbers after each letter code.  For example,
+<i>A01B2</i> indicates that only A-significant cells should be selected in subtables 0 and 1 and
+only B-significant codes should be selected in subtable 2.  You can identify subtables in the
+output, because the column lettering for significance restarts from (A) across the table for each subtable.</p>
+
+<p>In a nested table, the innermost dimension repeats, so you would probably
+want the selection to apply across all the nested subtables.  However, if variables are stacked
+across the columns, the meaning of the significance letters will be different in each
+subtable, and you might  want the selection to apply only to particular subtables.
+</p>
+<p>Subtable numbering starts from 0.  Up to ten subtables
+can be referenced using this notation.</p>
+
+<p><strong>SIGLEVELS</strong> specifies which significance levels should be selected.
+One or two significance levels can be shown in a table.  If there are two, the more significant values are indicated in upper case letters and the less significant in lower case.  In selecting, you can specify that both levels are selected or that only one or the other is selected.  If there is only one level in the table, choose BOTH or UPPER.</p>
+
 <h2>WIDTHS</h2>
 
 <p>Specify <strong>WIDTHS</strong>=list of widths to set the width of the selected
@@ -169,7 +207,8 @@ commands as needed.</p>
 <h3>Using Custom Functions</h3>
 
 <p>Besides the built in functionality, you can create a Python function to be called for each qualifying
-cell.  <strong>CUSTOMFUNCTION</strong> gives the module and function name in quotes and separated by &ldquo;.&rdquo;.
+cell.  <strong>CUSTOMFUNCTION</strong> gives the module and function name in quotes and separated by &ldquo;.&rdquo;.  If the function is defined in the syntax file with BEGIN PROGRAM, it can be referenced in the CUSTOMFUNCTION
+keyword with module name __main__.  Otherwise the module name is whatever Python file defines the function.
 See the customstylefunctions.py module included with this command
 for documentation on how to write such functions.</p>
 

@@ -1,6 +1,6 @@
 #Licensed Materials - Property of IBM
 #IBM SPSS Products: Statistics General
-#(c) Copyright IBM Corp. 2009, 2015
+#(c) Portions Copyright IBM Corp. 2009, 2016
 #US Government Users Restricted Rights - Use, duplication or disclosure 
 #restricted by GSA ADP Schedule Contract with IBM Corp.
 
@@ -53,7 +53,10 @@ If the function knows that nothing else needs to be done, returning False may sp
 Exceptions raised by custom functions are suppressed, and execution continues."""
 
 __author__ = "SPSS, JKP"
-__version__ = "1.9.0"
+__version__ = "1.9.2"
+
+# 21-oct-2015 Add exception protection to SetNumericFormatAndDecimals
+# 06-aug-2016 Add spreadsig function to move new style significance levels to their own row
 
 
 
@@ -66,7 +69,8 @@ from modifytables import RGB
 from extension import floatex  # strings to floats
 import sys
 
-    #debugging (move this code appropriately for repeated debugging)
+#debugging (move this code appropriately for repeated debugging)
+#import wingdbstub
 #try:
     #import wingdbstub
     #if wingdbstub.debugger != None:
@@ -80,6 +84,9 @@ import sys
     ##    ###SpssClient._heartBeat(False)
 #except:
     #pass
+
+
+
 
 # generic function
 # apply a specified scripting api to the appropriate object.
@@ -375,9 +382,14 @@ def SetNumericFormatAndDecimals(obj, i, j, numrows, numcols, section, more, cust
     format= 'formatspec'   (default is "#.#"
     decimals=n                (default is 2)  """
 
+    # If a pivot table has a short row such as with FREQUENCIES, an exception may
+    # be raised on such a cell
     if section == "datacells":
-        obj.SetNumericFormatAtWithDecimal(i, j, custom.get("format", "#.#"),
-            custom.get("decimals", 2))
+        try:
+            obj.SetNumericFormatAtWithDecimal(i, j, custom.get("format", "#.#"),
+                custom.get("decimals", 2))
+        except:
+            pass
     
 # The next function can be used to hide portions of tables where there is a sequence of numbered
 # repetitions of blocks.  For example, running REGRESSION with stepwise methods or other blocks
@@ -596,8 +608,12 @@ def transpose(obj, i, j, numrows, numcols, section, more, custom):
     to do anything else to the table on the same invocation of MODIFY TABLES!
     Therefore, it returns False in order to stop any further processing.
     """
-
-    PvtMgr = more.thetable.PivotManager().TransposeRowsWithColumns() 
+    # this api raises a harmless exception on some tables after completing
+    # the transpose
+    try:
+        PvtMgr = more.thetable.PivotManager().TransposeRowsWithColumns() 
+    except:
+        pass
     return False
     
 # Move the layers of a table to the columns
@@ -889,6 +905,28 @@ def HideRowBasedOnValues(obj, i, j, numrows, numcols, section, more, custom):
                 pass
         else:
             obj.HideLabelsWithDataAt(i,j)
+            
+# The next function takes the first, outermost, row label and makes it the table title.
+# Usage example:
+# CTABLES
+#     /TABLE jobcat [COUNT]  BY gender
+#     /TITLES TITLE='any title'.
+# 
+# SPSSINC MODIFY TABLES subtype='Custom Table'
+# SELECT="<<ALL>>" 
+# /STYLES  APPLYTO=LABELS 
+# CUSTOMFUNCTION="customstylefunctions.SetTitleFromStub".
+            
+def SetTitleFromStub(obj, i, j, numrows, numcols, section, more, custom):
+    """Copy the first row label outermost element and set as table title
+    
+    The target table may need to have a title, which will be replaced."""
+    
+    rowtext = more.rowlabelarray.GetValueAt(0,1)
+    more.pt.SetTitleText(rowtext)
+    more.rowlabelarray.SetValueAt(0,1,"")
+    more.rowlabelarray.SetRowLabelWidthAt(0, 1, 0)
+    return False
         
 # The following set of two color schemes is governed by the following license:
 #Apache-Style Software License for ColorBrewer software and ColorBrewer Color Schemes
@@ -1053,3 +1091,62 @@ def reletter(obj, i, j, numrows, numcols, section, more, custom):
     
 def showcorner(obj, i, j, numrows, numcols, section, more, custom):
     obj.ShowHiddenDimensionLabelAt(i,j)
+
+# Example usage:
+#SPSSINC MODIFY TABLES subtype="customtable"
+#SELECT="<<ALL>>" 
+#DIMENSION= COLUMNS LEVEL = -1  SIGLEVELS=BOTH 
+#PROCESS = PRECEDING 
+#/STYLES  APPLYTO=DATACELLS 
+#CUSTOMFUNCTION="customstylefunctions.spreadsig".
+
+def spreadsig(obj, i, j, numrows, numcols, section, more, custom):
+    """Move significance markers (new type) to their own row
+    
+    This function requires V24 or later
+    It signals the caller to stop processing when it returns
+    """
+    
+    labelcols = more.rowlabelarray.GetNumColumns() - 1  # off by 1
+    row = numrows
+    fail = False
+    first = True
+    while row > 0:
+        row -= 1
+        for col in range(numcols):
+            markers = more.datacells.GetSigMarkersAt(row, col)
+            ###print row, col, markers, more.datacells.GetValueAt(row, col)
+            if markers:
+                ###print row, col, markers
+                break
+        else:
+            continue
+        try:
+            try:
+                #more.rowlabelarray.InsertNewBefore(row, labelcols - 1, more.rowlabelarray.GetValueAt(row, labelcols-1))
+                more.rowlabelarray.InsertNewBefore(row, labelcols, more.rowlabelarray.GetValueAt(row, labelcols))
+            except:
+                if first:
+                    first = False
+                    labelcols -= 1
+                    more.rowlabelarray.InsertNewBefore(row, labelcols, more.rowlabelarray.GetValueAt(row, labelcols))
+            for col in range(numcols):
+                fmt = more.datacells.GetNumericFormatAt(row+1, col)
+                decdigits = more.datacells.GetHDecDigitsAt(row+1, col)
+                more.datacells.SetValueAt(row, col, str(more.datacells.GetUnformattedValueAt(row+1, col)))
+                more.datacells.SetNumericFormatAt(row, col, fmt)
+                more.datacells.SetHDecDigitsAt(row, col, decdigits)
+                more.datacells.SetValueAt(row+1, col, "")
+                more.datacells.SetVAlignAt(row, col, SpssClient.SpssVAlignTypes.SpssVAlTop)
+            #more.rowlabelarray.SetValueAt(row + 1, labelcols - 1, "Significance")
+            more.rowlabelarray.SetValueAt(row + 1, labelcols, "Significance")
+        except:
+            fail = True
+            pass    #subtotals cause an exception in the pivot table
+    if fail:
+        print "Unable to process this table correctly to move significance levels to their own row"
+
+    return False
+
+        
+            

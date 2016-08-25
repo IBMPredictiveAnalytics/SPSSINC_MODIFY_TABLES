@@ -12,7 +12,7 @@
 # format specific rows or columns in a pivot table of given type
 from __future__ import with_statement
 
-__version__ = '1.4.2'
+__version__ = '1.5.1'
 __author__ = "SPSS, JKP"
 
 # Note: This module requires at least SPSS 17.0.0
@@ -33,10 +33,17 @@ __author__ = "SPSS, JKP"
 # 20-dec-2010 printtablelabels fix
 # 03-feb-2014 Allow hiding based on spec not the innermost label
 # 19-feb-2015 Allow testing on nonnumeric values in table
+# 09-jun-2015 Try to compensate for problems with label width api
+# 26-oct-2015 More coping with label apis
+# 29-oct-2015 allow module for customfunction to be __main__
+# 25-nov-2015 Support new keywords for CTABLES significance values
+# 31-may-2016 Modify hider function to try fallback only if exception raised (iffy)
 
-import SpssClient
+import spss, SpssClient
 from extension import floatex, _isseq
 import re, functools, inspect, locale, sys
+
+v24ok = int(spss.GetDefaultPlugInVersion()[4:]) >= 240
     
     
 class fDataCellArray(object):
@@ -71,7 +78,8 @@ CUSTOMPARAMS={}
 def modify(subtype, select=None,  skiplog=True, process="preceding", dimension='columns',
            level=-1, hide=False, widths=None, rowlabels=None, rowlabelwidths=None,
            textstyle=None, textcolor=None, bgcolor=None, applyto="both", customfunction=None, 
-           printlabels=False, regexp=False, tlook=None, countinvis=True):
+           printlabels=False, regexp=False, tlook=None, countinvis=True,
+           sigcells=None, siglevels="both"):
     """Apply a hide or show action to specified columns or rows of the specified subtype or resize columns
 
     subtype is the OMS subtype of the tables to process or a sequence of subtypes
@@ -130,7 +138,12 @@ def modify(subtype, select=None,  skiplog=True, process="preceding", dimension='
         info = NonProcPivotTable("INFORMATION", tabletitle=_("Information"))
         c = PtColumns(select, dimension, level, hide, widths, 
             rowlabels, rowlabelwidths, textstyle, textcolor, bgcolor, applyto, customfunction, 
-            printlabels,regexp, tlook)
+            printlabels,regexp, tlook,
+            sigcells, siglevels)
+        
+        if sigcells is not None and not v24ok:
+            raise ValueError(_("""Significance highlighting requires at least Statistics version 24"""))
+
         if not _isseq(subtype):
             subtype=[subtype]
         # remove white space
@@ -168,7 +181,8 @@ class PtColumns(object):
 
     def __init__(self, columns, dimension, level, hide,
                  widths, rowlabels, rowlabelwidths, textstyle, textcolor, bgcolor, applyto, customfunction, 
-                 printlabels, regexp, tlook):
+                 printlabels, regexp, tlook,
+                 sigcells, siglevels):
         """columns is a sequence of identifiers of columns to act on.
         It can include positive or negative numbers (or things that can be converted to these) and
         strings that will be matched to the lowest level of the column labels ignoring case.
@@ -183,7 +197,9 @@ class PtColumns(object):
         or widths to be applied to the specified columns.  
         If it is a sequence of length 1, it is used for all specified columns.
         Otherwise, it is a sequence of sizes in points of the same length as the columns list.
-	if regexp, nonnumerical text in columns is treated as a regular expression
+        if regexp, nonnumerical text in columns is treated as a regular expression
+        sigcells indicates whether to flag significant cells (V24+, CTABLES standard markers only)
+        siglevels indicates which levels to flag in case there are two
         '"""
 
         if columns is None:
@@ -272,7 +288,74 @@ class PtColumns(object):
             for f in self.customfunction:
                 self.stylecalls.append(resolvestr(f))
         self.previousUsedValue = ""
+        
+        # significance controls
+        self.sigsetup(self.sigcells)
 
+        
+    def sigsetup(self, sigcells):
+        """Prepare structures for significance checking
+        sigcells can be "allsig" or a string listing letters
+        and optionally specific subtable numbers in 0...9 or None"""
+        
+        # the actual table must be checked for the presence of simple
+        # sigmarkers later
+        
+        # sigcells has the form letter[digits]letter[digits]... or "allsig"
+        # where digits is optional (no brackets)
+        # build dictionary with letter keys and values the set of digits
+        # if the set is empty, it means all subtables
+        # if sigcells is "allsig", all items are included
+        
+        if sigcells is None:
+            return
+        self.specificsigcells = {}
+        if not sigcells == "allsig":   # duplicate letter prevents ambiguity
+            s = sigcells + "*"
+            for i, c in enumerate(s):
+                if c.isalpha():
+                    stables = set()
+                    for j in range(i+1, len(s)):
+                        if s[j].isdigit():
+                            stables.add(int(s[j]))
+                        else:
+                            break   # a letter or * ends the list of subtables
+                    if self.siglevels in ["both", "lower"]:
+                        self.specificsigcells[c] = stables
+                    if self.siglevels in ["both", "upper"]:
+                        self.specificsigcells[c.upper()] = stables                    
+     
+    def checksigcells(self, row, col):
+        """Determine whether formatting should be applied
+        
+        row and col indicate the cell to be checked for marker"""
+        
+        # if significance is not being highlighted, allow standard formatting
+        # if it is but this cell does not qualify, suppress formatting
+        
+        if self.sigcells is None:
+            return True
+        # does table have markers of the right type for highlighting?
+        if self.pt.GetSigMarkersType() != SpssClient.SpssSigMarkerTypes.SpssSigSimple:
+            return False
+        markers = self.datacells.GetSigMarkersAt(row, col)
+        if markers is None:
+            return False
+        if not self.specificsigcells:  # all significant cells get formatting
+            return True
+        # check for specific markers possibly qualified by subtable number
+        for marker in markers:
+            if marker in self.specificsigcells:
+                if not self.specificsigcells[marker]:
+                    return True  # no subtable list so all get formatting
+                else:
+                    for st, item in enumerate(self.coltablemap):
+                        if item[0] <= col <= item[1]:
+                            if st in self.specificsigcells[marker]:  # this subtable included?
+                                return True
+                    return False
+            else:
+                return False  # this marker not selected
 
     def applyaction(self, pt, info):
         """Apply specified action to columns or rows of a pivot table.
@@ -283,6 +366,7 @@ class PtColumns(object):
         #    pt.ShowAll()
         #    return
 
+        self.pt = pt   # we will need this available for significance processing
         if self.tlook:
             pt.SetTableLook(self.tlook)
         if self.widths and self.columns and self.columns[0] == '<<ALL>>':
@@ -293,6 +377,7 @@ class PtColumns(object):
         self.rowlabelarray = fRowLabelArray(pt)
         #self.columnlabelarray = pt.ColumnLabelArray()
         self.columnlabelarray = fColumnLabelArray(pt)
+        self.coltablemap = self.buildcolstruc(pt)
 
         self.numdatarows = self.datacells.GetNumRows()
         self.numdatacols = self.datacells.GetNumColumns()
@@ -360,6 +445,53 @@ class PtColumns(object):
         finally:
             pt.SetUpdateScreen(True)
 
+    def buildcolstruc(self, pt):
+        """Analyze column subtable structure and return map or None"""
+        
+        if not v24ok:
+            return None
+        if pt.GetSigMarkersType() != SpssClient.SpssSigMarkerTypes.SpssSigSimple:
+            return None
+        markerpattern = re.compile(r"\([A-Z]{1,2}\)")
+        ncols = self.columnlabelarray.GetNumColumns()
+        nrows = self.columnlabelarray.GetNumRows()
+        # find the column marker row - must be last or last - 1 - and get markers
+        # guess next to last row
+        # The markerlist will not contain information about any columns that do not
+        # have a letter.  Those cannot contain significance references
+        for i in [nrows-1, nrows-2]:
+            markers = []
+            for c in range(ncols):
+                cell = re.match(markerpattern, self.columnlabelarray.GetValueAt(i, c))
+                if cell:
+                    cell = cell.group()
+                    markers.append((c, cell[1:len(cell)-1]))  # just the marker and column number
+            if any(item is not None for item in markers):
+                break
+        else:
+            return None   # no markers were found
+        
+        # find subtable structure using lettering sequence
+        subtables = []
+        themin = ""
+        themax = ""
+        themincol = 0
+        themaxcol = 0
+        
+        for item in markers:
+            if item[1] >= themax:
+                themax = item[1]
+                themaxcol = item[0]
+            else:
+                subtables.append((themincol, themaxcol))
+                themincol = item[0]
+                themax = ""
+        subtables.append((themincol, themaxcol))
+        return subtables
+        
+        
+        
+        
     def hider(self, dimension, last, i, j):
         """Hide specified row(s) or columns even if not innermost
 		
@@ -367,13 +499,31 @@ class PtColumns(object):
 		last is the index of the innermost label in the dimension
 		i and j index the label array for the matching label"""
         
+        # there is some api confusion about the last row or column.
+        # The information on last is not always reliable, so we try
+        # to catch this and use another guess
+        # The hide with the wrong level doesn't always raise an exception
+        # so now we just try both.  This should work in both older and
+        # newer Statistics versions.
+        # changed to only try the second setting if an exception is raised.
+        
         if dimension == "columns":
             hideloc = max(i, last)
-            self.labels.HideLabelsWithDataAt(hideloc, j)
+            try:
+                self.labels.HideLabelsWithDataAt(hideloc, j)
+            except:
+                self.labels.HideLabelsWithDataAt(hideloc-2, j)
+            #except:
+                #pass
         else:
             hideloc = max(j, last)
-            self.labels.HideLabelsWithDataAt(i,hideloc)
-                    
+            try:
+                self.labels.HideLabelsWithDataAt(i,hideloc)
+            except:
+                self.labels.HideLabelsWithDataAt(i,hideloc-2)
+            #except:
+                #pass    
+                
     def dostyles(self, roworcol):
         """Apply any requested styles to labels and/or datacells.
 
@@ -466,10 +616,15 @@ Label number: %s.  Table size: %s""")\
                     outcome = False
 
             if outcome:
-                for f in self.stylecalls:
-                    rc = f(self.datacells, row, col, self.numdatarows, self.numdatacols, "datacells",  self)
-                    if rc is False:
-                        return rc
+                # checksigcells will return True if
+                # - not doing significance formatting or
+                # - doing significance formatting and it should be applied to this cell
+                # Thus sig formatting can suppress formatting that would otherwise be applied
+                if self.checksigcells(row, col):
+                    for f in self.stylecalls:
+                        rc = f(self.datacells, row, col, self.numdatarows, self.numdatacols, "datacells",  self)
+                        if rc is False:
+                            return rc
 
     def labelcellstyles(self, roworcol, numlabelrows, numlabelcols):
         """Apply label styles
@@ -481,7 +636,10 @@ Label number: %s.  Table size: %s""")\
             limit = numlabelrows
         else:
             limit = numlabelcols
-
+        # It is possible for a table to have no labels in a dimension
+        #if limit == 0:
+            #return
+        limit = max(limit, 1)
         for i in range((limit + self.level) % limit, limit):
             if coldim:
                 row, col = i, roworcol
@@ -547,7 +705,10 @@ def resolvestr(afunc):
         bf = f.split(".")
         if len(bf) != 2:
             raise ValueError(_("function reference %s not valid") % f)
-        exec "from %s import %s as customfunction" % (bf[0], bf[1])
+        if bf[0] == "__main__":
+            customfunction = eval("""sys.modules["__main__"].%s""" % bf[1])
+        else:
+            exec "from %s import %s as customfunction" % (bf[0], bf[1])
         argspec = inspect.getargspec(customfunction)[0]
         nargs = len(argspec)
         if nargs < 7 or nargs > 8:

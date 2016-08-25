@@ -12,8 +12,7 @@
 <!--                                                                   -->
 <!-- ***************************************************************** -->
 <!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Jon Peck (SPSS Inc.) -->
-<Command xmlns="http://xml.spss.com/spss/extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xsi:noNamespaceSchemaLocation="extension-1.0.xsd" Name="SPSSINC MODIFY TABLES" Language="Python">
+<Command xmlns="http://xml.spss.com/spss/extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extension-1.0.xsd" Name="SPSSINC MODIFY TABLES" Language="Python">
 	<Subcommand Name="" IsArbitrary="False" Occurrence="Optional">
 		<Parameter Name="SUBTYPE" ParameterType="TokenList"/>
 		<Parameter Name="SELECT" ParameterType="TokenList"/>
@@ -39,6 +38,9 @@ xsi:noNamespaceSchemaLocation="extension-1.0.xsd" Name="SPSSINC MODIFY TABLES" L
 			<EnumValue Name="FALSE"/>
 		</Parameter>
 		<Parameter Name="COUNTINVIS" ParameterType="Keyword"/>
+		<Parameter Name="SIGCELLS" ParameterType="Keyword"/>
+		<Parameter Name="SIGLEVELS" ParameterType="Keyword"/>
+		<Parameter Name="SUBTABLES" ParameterType="Integer"/>
 	</Subcommand>
 	<Subcommand Name="WIDTHS">
 		<Parameter Name="WIDTHS" ParameterType="TokenList"/>
