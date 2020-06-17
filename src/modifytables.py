@@ -3,14 +3,14 @@
 # *
 # * IBM SPSS Products: Statistics Common
 # *
-# * (C) Copyright IBM Corp. 1989, 2015
+# * (C) Copyright IBM Corp. 1989, 2020
 # *
 # * US Government Users Restricted Rights - Use, duplication or disclosure
 # * restricted by GSA ADP Schedule Contract with IBM Corp. 
 # ************************************************************************/
 
 # format specific rows or columns in a pivot table of given type
-from __future__ import with_statement
+
 
 __version__ = '1.5.1'
 __author__ = "SPSS, JKP"
@@ -400,7 +400,7 @@ class PtColumns(object):
         specificrowsorcols = self.resolvecols(self.columns, rowsorcols, info)
         scset = set(specificrowsorcols)
         if self.widths:
-            wdict = dict(zip(specificrowsorcols, self.widths))   # won't work with regexp
+            wdict = dict(list(zip(specificrowsorcols, self.widths)))   # won't work with regexp
 
         try:
             pt.SetUpdateScreen(False)
@@ -436,7 +436,7 @@ class PtColumns(object):
             if self.rowlabels:
                 labels = self.rowlabelarray
                 rowsorcols = labels.GetNumColumns()
-                wdict = dict(zip(self.resolvecols(self.rowlabels, rowsorcols, info), self.rowlabelwidths))
+                wdict = dict(list(zip(self.resolvecols(self.rowlabels, rowsorcols, info), self.rowlabelwidths)))
                 # process table data and label cells for width, hiding, and formatting
                 for  roworcol in range(rowsorcols):
                     newwidth = wdict.get(roworcol, None)
@@ -608,9 +608,9 @@ Label number: %s.  Table size: %s""")\
                 try:
                     if outcome:
                         outcome = eval(self.applyto, {'x':x, "i":i, "ii": roworcol})
-                except (NameError, SyntaxError), e:
-                    if not isinstance(self.applyto, unicode):
-                        self.applyto = unicode(self.applyto, self.encoding)
+                except (NameError, SyntaxError) as e:
+                    if not isinstance(self.applyto, str):
+                        self.applyto = str(self.applyto, self.encoding)
                     raise ValueError(_("APPLYTO expression is invalid: %s") % self.applyto)
                 except:
                     outcome = False
@@ -685,7 +685,7 @@ def attributesFromDict(d):
     # based on Python Cookbook, 2nd edition 6.18
 
     self = d.pop('self')
-    for name, value in d.iteritems():
+    for name, value in list(d.items()):
         setattr(self, name, value)
 
 def resolvestr(afunc):
@@ -708,13 +708,13 @@ def resolvestr(afunc):
         if bf[0] == "__main__":
             customfunction = eval("""sys.modules["__main__"].%s""" % bf[1])
         else:
-            exec "from %s import %s as customfunction" % (bf[0], bf[1])
+            exec("from %s import %s as customfunction" % (bf[0], bf[1]))
         argspec = inspect.getargspec(customfunction)[0]
         nargs = len(argspec)
         if nargs < 7 or nargs > 8:
             argspecj = ", ".join(argspec)
-            if not isinstance(argspecj, unicode):
-                argspecj = unicode(argspecj, locale.getlocale()[1])
+            if not isinstance(argspecj, str):
+                argspecj = str(argspecj, locale.getlocale()[1])
             raise ValueError(_("Invalid custom function signature.\nToo few arguments: %s") % argspecj)
         elif nargs > 7:       # indicates function provides for custom params
             customfunction = functools.partial(customfunction, custom=CUSTOMPARAMS[f])
@@ -734,8 +734,8 @@ def factor(afunc):
             params = eval("dict" + mo.group(2) )
         except:
             mog = mo.group(2)
-            if not isinstance(mog, unicode):
-                mog = unicode(mog, locale.getlocale()[1])
+            if not isinstance(mog, str):
+                mog = str(mog, locale.getlocale()[1])
             raise ValueError(_("Invalid customfunction parameter expression: %s") % mog)
         f = mo.group(1)
     else:
@@ -814,7 +814,7 @@ def _isseq(obj):
         
         Will be False if obj is a string or basic data type"""
         
-        if isinstance(obj, basestring):
+        if isinstance(obj, str):
                 return False
         else:
                 try:

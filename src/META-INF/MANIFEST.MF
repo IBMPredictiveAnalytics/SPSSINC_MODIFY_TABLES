@@ -1,21 +1,23 @@
 Name: SPSSINC MODIFY TABLES
 Dialog-Specs: SPSSINC_MODIFY_TABLES.spd
 Command-Specs: SPSSINC_MODIFY_TABLES.xml
-Code-Files: modifytables.py,SPSSINC_MODIFY_TABLES.py,customstylefuncti
+Code-Files: SPSSINC_MODIFY_TABLES.py,modifytables.py,customstylefuncti
  ons.py
-Misc-Files: testmodifytablesgarish.sps,Hiding.sps,markdown.html,testFo
- rmatCorr.sps,notices_SPSSINC MODIFY TABLES.txt,testModifyTables.sps,e
- xtsyntax.css,IBMdialogicon.png,testsigspread.sps,SPSSINC_MODIFY_TABLE
- S.htm
+Misc-Files: extsyntax.css,testsigspread.sps,Hiding.sps,SPSSINC_MODIFY_
+ TABLES.htm,IBMdialogicon.png,testModifyTables.sps,testmodifytablesgar
+ ish.sps,testFormatCorr.sps,notices_SPSSINC MODIFY TABLES.txt,markdown
+ .html
 Summary: Modify the appearance of pivot tables.
 Description: This procedure allows you to modify the appearance of dat
  a cells and row and column labels. You can modify text style, text co
  lor or background color. You can also set column widths or the width 
  of row labels and you can hide specified rows or columns.
 Author: IBM SPSS
-Version: 1.6.2
-Product-Version: 18
+Version: 2.0.0
+Product-Version: 24
 Date: 10/7/2011
+Product-Version-Maximum: 99
 Categories: Extension Commands, Python
 Plugins: Python
+Python-Version: 3
 Translation-Catalogues: lang

@@ -1,6 +1,6 @@
 #Licensed Materials - Property of IBM
 #IBM SPSS Products: Statistics General
-#(c) Portions Copyright IBM Corp. 2009, 2016
+#(c) Portions Copyright IBM Corp. 2009, 2020
 #US Government Users Restricted Rights - Use, duplication or disclosure 
 #restricted by GSA ADP Schedule Contract with IBM Corp.
 
@@ -126,7 +126,7 @@ def generic(obj, i, j, numrows, numcols, section, more, custom):
     try:
         if custom["_first"]:
             if not "onceonly" in custom:   # for orderly error reporting
-                print _("""Error: Required parameter onceonly was not specified""")
+                print((_("""Error: Required parameter onceonly was not specified""")))
                 return False
             custom["_first"] = False
         
@@ -146,7 +146,7 @@ def generic(obj, i, j, numrows, numcols, section, more, custom):
                     pass
             f(*parms2)
     except:
-        print _("""Error in custom function generic:"""), sys.exc_info()[1]
+        print((_("""Error in custom function generic:"""), sys.exc_info()[1]))
     finally:
         if custom["onceonly"]:
             return False
@@ -323,7 +323,7 @@ def setLeadingZero(obj, i, j, numrows, numcols, section, more):
     try:
         value2 = str(round(float(value), decimals)).replace(".", ",")  # comma locale
         
-        obj.SetValueAt(i,j, unichr(160) + value2)  # a NBSP is used to prevent conversion to a number
+        obj.SetValueAt(i,j, chr(160) + value2)  # a NBSP is used to prevent conversion to a number
         obj.SetHAlignAt(i,j, SpssClient.SpssHAlignTypes.SpssHAlRight)
     except:
         pass
@@ -415,7 +415,7 @@ def hideNonfinalRows(obj, i, j, numrows, numcols, section, more):
                     obj.HideLabelsWithDataAt(i,1)
                 more.previousUsedValue = value
         except:
-            print "Pivot table exception.  row: %s" % i
+            print(("Pivot table exception.  row: %s" % i))
 
     
 # Next function is intended for use with SPSSINC MERGE TABLES when the test table has been
@@ -469,7 +469,7 @@ def SetCellMargins(obj, i, j, numrows, numcols, section, more, custom):
         custom["mlist"] = dict([(k, custom[k])\
             for k in ['left','right','top','bottom'] if k in custom])
         
-    for k, val in custom["mlist"].items():
+    for k, val in list(custom["mlist"].items()):
         curvalue = marginApis[k][0](i,j)
         marginApis[k][1](i,j, curvalue * int(val))
 
@@ -505,13 +505,13 @@ def sortTable(obj, i, j, numrows, numcols, section, more, custom):
     
     direction = custom.get("direction", "a")
     if not direction in ['a', 'd']:
-        print "direction must be 'a' or 'd'"
+        print("direction must be 'a' or 'd'")
         raise ValueError
     
     PvtMgr = more.thetable.PivotManager()
     numrowdims = PvtMgr.GetNumRowDimensions()
     if numrowdims != 1:
-        print "Cannot sort table unless there is exactly one row dimension"
+        print("Cannot sort table unless there is exactly one row dimension")
         raise ValueError
 
     col = j   # sorting column
@@ -593,7 +593,7 @@ def moveRowDimension(obj, i, j, numrows, numcols, section, more, custom):
         row.MoveToRow(tor)
         return False
     except:
-        print "Row move failed: probable invalid row number"
+        print("Row move failed: probable invalid row number")
         
 # transpose the rows and columns of a table
 # Usage example
@@ -790,7 +790,7 @@ def hideFootnotes(obj, i, j, numrows, numcols, section, more, custom):
     # Use the footnote array and make null markers
     fna = more.thetable.FootnotesArray()
     count = fna.GetCount()
-    fnlist = custom.get("fnlist", range(count))
+    fnlist = custom.get("fnlist", list(range(count)))
     for fn in fnlist:
         if fn < count:
             fna.SetTextHiddenAt(fn, True)
@@ -1081,7 +1081,7 @@ def reletter(obj, i, j, numrows, numcols, section, more, custom):
                 val = val[:-2] + custom["map"][val[-2]] + val[-1]
                 obj.SetValueAt(i, j, val)
         else:
-            if isinstance(val, basestring):
+            if isinstance(val, str):
                 newval = []
                 for c in val:
                     newval.append(custom["map"].get(c,c))
@@ -1144,7 +1144,7 @@ def spreadsig(obj, i, j, numrows, numcols, section, more, custom):
             fail = True
             pass    #subtotals cause an exception in the pivot table
     if fail:
-        print "Unable to process this table correctly to move significance levels to their own row"
+        print("Unable to process this table correctly to move significance levels to their own row")
 
     return False
 
