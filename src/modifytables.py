@@ -12,7 +12,7 @@
 # format specific rows or columns in a pivot table of given type
 
 
-__version__ = '1.5.1'
+__version__ = '1.5.2'
 __author__ = "SPSS, JKP"
 
 # Note: This module requires at least SPSS 17.0.0
@@ -708,8 +708,9 @@ def resolvestr(afunc):
         if bf[0] == "__main__":
             customfunction = eval("""sys.modules["__main__"].%s""" % bf[1])
         else:
-            exec("from %s import %s as customfunction" % (bf[0], bf[1]))
-        argspec = inspect.getargspec(customfunction)[0]
+            exec("from %s import %s" % (bf[0], bf[1]))
+            customfunction = locals()[bf[1]]
+        argspec = inspect.getfullargspec(customfunction)[0]
         nargs = len(argspec)
         if nargs < 7 or nargs > 8:
             argspecj = ", ".join(argspec)
