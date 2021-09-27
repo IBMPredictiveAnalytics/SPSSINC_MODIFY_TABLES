@@ -3,7 +3,7 @@
 # *
 # * IBM SPSS Products: Statistics Common
 # *
-# * (C) Copyright IBM Corp. 1989, 2020
+# * (C) Copyright IBM Corp. 1989, 2021
 # *
 # * US Government Users Restricted Rights - Use, duplication or disclosure
 # * restricted by GSA ADP Schedule Contract with IBM Corp. 
@@ -12,7 +12,7 @@
 # format specific rows or columns in a pivot table of given type
 
 
-__version__ = '1.5.2'
+__version__ = '1.5.3'
 __author__ = "SPSS, JKP"
 
 # Note: This module requires at least SPSS 17.0.0
@@ -38,6 +38,7 @@ __author__ = "SPSS, JKP"
 # 29-oct-2015 allow module for customfunction to be __main__
 # 25-nov-2015 Support new keywords for CTABLES significance values
 # 31-may-2016 Modify hider function to try fallback only if exception raised (iffy)
+# 07-sep-2021 Python 3 conversion - remove re.locale
 
 import spss, SpssClient
 from extension import floatex, _isseq
@@ -121,18 +122,16 @@ def modify(subtype, select=None,  skiplog=True, process="preceding", dimension='
     except:
         def _(msg):
             return msg
-        ###debugging
-    #try:
-        #import wingdbstub
-        #if wingdbstub.debugger != None:
-            #import time
-            #wingdbstub.debugger.StopDebug()
-            #time.sleep(2)
-            #wingdbstub.debugger.StartDebug()
-        #import thread
-        #wingdbstub.debugger.SetDebugThreads({thread.get_ident(): 1}, default_policy=0)
-    #except:
-        #pass
+
+    # debugging
+        # makes debug apply only to the current thread
+    try:
+        import wingdbstub
+        import threading
+        wingdbstub.Ensure()
+        wingdbstub.debugger.SetDebugThreads({threading.get_ident(): 1})
+    except:
+        pass
     SpssClient.StartClient()
     try:
         info = NonProcPivotTable("INFORMATION", tabletitle=_("Information"))
@@ -250,7 +249,7 @@ class PtColumns(object):
         if regexplist:   # combine all regexp terms with or if any were found
             try:
                 regexp = "|".join(["("+item+")" for item in regexplist])
-                self.regexp = re.compile(regexp, re.LOCALE)
+                self.regexp = re.compile(regexp)
             except:
                 reerr = sys.exc_info()[1]
                 raise ValueError(_("Invalid regular expression: %s error: %s") % (regexp, str(reerr)))

@@ -26,10 +26,15 @@ from extension import Template, Syntax, processcmd
 
 import modifytables
 
-#try:
-    #import wingdbstub
-#except:
-    #pass
+# debugging
+        # makes debug apply only to the current thread
+try:
+    import wingdbstub
+    import threading
+    wingdbstub.Ensure()
+    wingdbstub.debugger.SetDebugThreads({threading.get_ident(): 1})
+except:
+    pass
 
 helptext="""SPSS MODIFY TABLES SUBTYPE=subtypes SELECT=list of columns or rows to operate on
     [PROCESS={PRECEDING* | ALL}
