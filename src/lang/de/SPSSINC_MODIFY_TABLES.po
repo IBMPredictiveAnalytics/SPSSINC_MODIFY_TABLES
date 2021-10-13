@@ -1,114 +1,99 @@
-#/***********************************************************************
-# * Licensed Materials - Property of IBM 
-# *
-# * IBM SPSS Products: Statistics Common
-# *
-# * (C) Copyright IBM Corp. 1989, 2011
-# *
-# * US Government Users Restricted Rights - Use, duplication or disclosure
-# * restricted by GSA ADP Schedule Contract with IBM Corp. 
-# ************************************************************************/
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Translations template for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
+
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-01-08 07:54+Mountain Standard Time\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-10-11 00:31-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: ENCODING\n"
-"Generated-By: pygettext.py 1.5\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Globalization Pipeline\n"
 
-
-#: modifytables.py:101
 msgid "---"
 msgstr "---"
 
-#: modifytables.py:108
 msgid "Information"
 msgstr "Information"
 
-#: modifytables.py:170
 msgid "HIDE cannot be combined with other actions"
 msgstr "HIDE kann nicht mit anderen Aktionen kombiniert werden."
 
-#: modifytables.py:175
 msgid "Row or column specification must be a sequence of one or more values"
-msgstr "Zeilen- bzw. Spaltenspezifikation muss ein Wert oder eine Sequenz aus mehreren Werten sein."
+msgstr ""
+"Zeilen- bzw. Spaltenspezifikation muss ein Wert oder eine Sequenz aus mehreren"
+" Werten sein."
 
-#: modifytables.py:178
 msgid "The rows dimension cannot be combined with resizing"
 msgstr "Die Spaltendimension kann nicht mit Größenänderung kombiniert werden."
 
-#: modifytables.py:182
 msgid "Regular expression mode is not available with widths"
 msgstr "Der Modus 'Regulärer Ausdruck' steht für Breiten nicht zur Verfügung."
 
-#: modifytables.py:184
-msgid "The number of column sizes specified is different from number of columns specified."
-msgstr "Die Anzahl der angegebenen Spaltengrößen stimmt nicht mit der Anzahl der angegebenen Spalten überein."
+msgid ""
+"The number of column sizes specified is different from number of columns "
+"specified."
+msgstr ""
+"Die Anzahl der angegebenen Spaltengrößen stimmt nicht mit der Anzahl der "
+"angegebenen Spalten überein."
 
-#: modifytables.py:188
 msgid "ROWLABELS and ROWLABELWIDTHS must be specified together"
 msgstr "ROWLABELS und ROWLABELWIDTHS müssen zusammen angegeben werden."
 
-#: modifytables.py:193
-msgid "The number of row label sizes specified is different from number of row labels specified."
-msgstr "Die Anzahl der angegebenen Größen für Zeilenbeschriftungen stimmt nicht mit der Anzahl der angegebenen Zeilenbeschriftungen überein."
+msgid ""
+"The number of row label sizes specified is different from number of row labels"
+" specified."
+msgstr ""
+"Die Anzahl der angegebenen Größen für Zeilenbeschriftungen stimmt nicht mit "
+"der Anzahl der angegebenen Zeilenbeschriftungen überein."
 
-#: modifytables.py:196
 msgid "SELECT is required unless ROWLABELS is specified"
 msgstr "SELECT ist erforderlich, sofern nicht ROWLABELS angegeben wurde."
 
-#: modifytables.py:214
 msgid "HIDE cannot be applied with columns = <<ALL>>"
 msgstr "HIDE kann nicht auf Spalten angewendet werden = <<ALL>>"
 
-#: modifytables.py:239
 msgid "Set Background Color exception: %s %s %s"
 msgstr "Ausnahme für Hintergrundfarbe festlegen: %s %s %s"
 
-#: modifytables.py:362
 msgid ""
-"A specified row or column label number does not exist in a selected table.\n"
-"It will be ignored.  Any column-specific width settings may be incorrect.\n"
-"Label number: %s.  Table size: %s"
+"A specified row or column label number does not exist in a selected table.\nIt"
+" will be ignored.  Any column-specific width settings may be incorrect.\nLabel"
+" number: %s.  Table size: %s"
 msgstr ""
-"Eine angegebene Zeilen- oder Spaltenbeschriftungsnummer ist in einer ausgewählten Tabelle nicht vorhanden.\n"
-"Sie wird ignoriert.  Spaltenspezifische Breiteneinstellungen sind möglicherweise falsch.\n"
-"Beschriftungsnummer: %s.  Tabellengröße: %s"
+"Eine angegebene Zeilen- oder Spaltenbeschriftungsnummer ist in einer "
+"ausgewählten Tabelle nicht vorhanden.\nSie wird ignoriert.  Spaltenspezifische"
+" Breiteneinstellungen sind möglicherweise falsch.\nBeschriftungsnummer: %s.  "
+"Tabellengröße: %s"
 
-#: modifytables.py:378
 msgid "Table Labels: %s.  Dimensions: %s, %s"
 msgstr "Tabellenbeschriftungen: %s.  Dimensionen: %s, %s"
 
-#: modifytables.py:415
 msgid "APPLYTO expression is invalid: %s"
 msgstr "Ausdruck APPLYTO ist ungültig: %s"
 
-#: modifytables.py:457
-msgid "Color specification must consist of three integers (R, G, and B values) between 0 and 255"
-msgstr "Farbspezifikation muss aus drei ganzen Zahlen (R-, G- und B-Wert) zwischen 0 und 255 bestehen."
+msgid ""
+"Color specification must consist of three integers (R, G, and B values) "
+"between 0 and 255"
+msgstr ""
+"Farbspezifikation muss aus drei ganzen Zahlen (R-, G- und B-Wert) zwischen 0 "
+"und 255 bestehen."
 
-#: modifytables.py:485
 msgid "function reference %s not valid"
 msgstr "Funktionsreferenenz %s ungültig"
 
-#: modifytables.py:493
-msgid ""
-"Invalid custom function signature.\n"
-"Too few arguments: %s"
+msgid "Invalid custom function signature.\nToo few arguments: %s"
 msgstr ""
-"Ungültige Signatur für benutzerdefinierte Funktion.\n"
-"Nicht genügend Argumente: %s"
+"Ungültige Signatur für benutzerdefinierte Funktion.\nNicht genügend Argumente:"
+" %s"
 
-#: modifytables.py:514 modifytables.py:522
 msgid "Invalid customfunction parameter expression: %s"
 msgstr "Ungültiger Parameterausdruck für benutzerdefinierte Funktion: %s"
 

@@ -1,114 +1,85 @@
-#/***********************************************************************
-# * Licensed Materials - Property of IBM 
-# *
-# * IBM SPSS Products: Statistics Common
-# *
-# * (C) Copyright IBM Corp. 1989, 2011
-# *
-# * US Government Users Restricted Rights - Use, duplication or disclosure
-# * restricted by GSA ADP Schedule Contract with IBM Corp. 
-# ************************************************************************/
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Translations template for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
+
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-01-08 07:54+Mountain Standard Time\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-10-11 00:53-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: ENCODING\n"
-"Generated-By: pygettext.py 1.5\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Globalization Pipeline\n"
 
-
-#: modifytables.py:101
 msgid "---"
 msgstr "---"
 
-#: modifytables.py:108
 msgid "Information"
 msgstr "資訊"
 
-#: modifytables.py:170
 msgid "HIDE cannot be combined with other actions"
 msgstr "HIDE 不得與其他動作組合"
 
-#: modifytables.py:175
 msgid "Row or column specification must be a sequence of one or more values"
 msgstr "列或行指定必須是一或多個數值的序列"
 
-#: modifytables.py:178
 msgid "The rows dimension cannot be combined with resizing"
 msgstr "列維度不得與重新調整大小組合"
 
-#: modifytables.py:182
 msgid "Regular expression mode is not available with widths"
 msgstr "寬度無法使用規則運算式模式"
 
-#: modifytables.py:184
-msgid "The number of column sizes specified is different from number of columns specified."
+msgid ""
+"The number of column sizes specified is different from number of columns "
+"specified."
 msgstr "指定的行大小數目與指定的行數不同。"
 
-#: modifytables.py:188
 msgid "ROWLABELS and ROWLABELWIDTHS must be specified together"
 msgstr "必須同時指定 ROWLABELS 與 ROWLABELWIDTHS"
 
-#: modifytables.py:193
-msgid "The number of row label sizes specified is different from number of row labels specified."
+msgid ""
+"The number of row label sizes specified is different from number of row labels"
+" specified."
 msgstr "指定的列標記大小數目與指定的列標記數目不同。"
 
-#: modifytables.py:196
 msgid "SELECT is required unless ROWLABELS is specified"
 msgstr "除非指定了 ROWLABELS，否則 SELECT 為必要選項"
 
-#: modifytables.py:214
 msgid "HIDE cannot be applied with columns = <<ALL>>"
 msgstr "HIDE 不得套用於行 = <<ALL>>"
 
-#: modifytables.py:239
 msgid "Set Background Color exception: %s %s %s"
 msgstr "設定背景色彩例外： %s %s %s"
 
-#: modifytables.py:362
 msgid ""
-"A specified row or column label number does not exist in a selected table.\n"
-"It will be ignored.  Any column-specific width settings may be incorrect.\n"
-"Label number: %s.  Table size: %s"
-msgstr ""
-"指定的列或行標記編號不存在於選取的表格中。\n"
-"將予以略過。  任何行指定的寬度設定值可能不正確。\n"
-"標記編號： %s。  表格大小： %s"
+"A specified row or column label number does not exist in a selected table.\nIt"
+" will be ignored.  Any column-specific width settings may be incorrect.\nLabel"
+" number: %s.  Table size: %s"
+msgstr "指定的列或行標記編號不存在於選取的表格中。\n將予以略過。  任何行指定的寬度設定值可能不正確。\n標記編號： %s。  表格大小： %s"
 
-#: modifytables.py:378
 msgid "Table Labels: %s.  Dimensions: %s, %s"
 msgstr "表格標記： %s。  維度： %s，%s"
 
-#: modifytables.py:415
 msgid "APPLYTO expression is invalid: %s"
 msgstr "APPLYTO 運算式無效：%s"
 
-#: modifytables.py:457
-msgid "Color specification must consist of three integers (R, G, and B values) between 0 and 255"
+msgid ""
+"Color specification must consist of three integers (R, G, and B values) "
+"between 0 and 255"
 msgstr "色彩指定必須由 3 個介於 0 與 255 之間的整數組成 (R、G，與 B 值) "
 
-#: modifytables.py:485
 msgid "function reference %s not valid"
 msgstr "函數參考 %s 無效"
 
-#: modifytables.py:493
-msgid ""
-"Invalid custom function signature.\n"
-"Too few arguments: %s"
-msgstr ""
-"無效的自訂函數簽章。\n"
-"引數太少： %s"
+msgid "Invalid custom function signature.\nToo few arguments: %s"
+msgstr "無效的自訂函數簽章。\n引數太少： %s"
 
-#: modifytables.py:514 modifytables.py:522
 msgid "Invalid customfunction parameter expression: %s"
 msgstr "無效的自訂函數參數運算式：%s"
 

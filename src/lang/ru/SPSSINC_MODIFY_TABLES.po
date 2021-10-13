@@ -1,114 +1,96 @@
-#/***********************************************************************
-# * Licensed Materials - Property of IBM 
-# *
-# * IBM SPSS Products: Statistics Common
-# *
-# * (C) Copyright IBM Corp. 1989, 2011
-# *
-# * US Government Users Restricted Rights - Use, duplication or disclosure
-# * restricted by GSA ADP Schedule Contract with IBM Corp. 
-# ************************************************************************/
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Translations template for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
+
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-01-08 07:54+Mountain Standard Time\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-10-11 00:53-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: ENCODING\n"
-"Generated-By: pygettext.py 1.5\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Globalization Pipeline\n"
 
-
-#: modifytables.py:101
 msgid "---"
 msgstr "---"
 
-#: modifytables.py:108
 msgid "Information"
 msgstr "Информация"
 
-#: modifytables.py:170
 msgid "HIDE cannot be combined with other actions"
 msgstr "HIDE нельзя объединить с другими действиями"
 
-#: modifytables.py:175
 msgid "Row or column specification must be a sequence of one or more values"
-msgstr "Спецификация строк или столбцов должна быть последовательностью из одного или нескольких значений"
+msgstr ""
+"Спецификация строк или столбцов должна быть последовательностью из одного или "
+"нескольких значений"
 
-#: modifytables.py:178
 msgid "The rows dimension cannot be combined with resizing"
 msgstr "Измерение строк не может быть объединено с изменением размеров"
 
-#: modifytables.py:182
 msgid "Regular expression mode is not available with widths"
 msgstr "Регулярные выражения неприменимы со значениями ширины"
 
-#: modifytables.py:184
-msgid "The number of column sizes specified is different from number of columns specified."
-msgstr "Заданное число значений ширины столбцов отличается от заданного числа столбцов."
+msgid ""
+"The number of column sizes specified is different from number of columns "
+"specified."
+msgstr ""
+"Заданное число значений ширины столбцов отличается от заданного числа столбцов"
 
-#: modifytables.py:188
 msgid "ROWLABELS and ROWLABELWIDTHS must be specified together"
 msgstr "ROWLABELS и ROWLABELWIDTHS должны быть заданы вместе"
 
-#: modifytables.py:193
-msgid "The number of row label sizes specified is different from number of row labels specified."
-msgstr "Заданное число размеров меток строк отличается от заданного числа меток строк."
+msgid ""
+"The number of row label sizes specified is different from number of row labels"
+" specified."
+msgstr ""
+"Заданное число размеров меток строк отличается от заданного числа меток строк."
 
-#: modifytables.py:196
 msgid "SELECT is required unless ROWLABELS is specified"
 msgstr "Требуется SELECT, если не задается ROWLABELS"
 
-#: modifytables.py:214
 msgid "HIDE cannot be applied with columns = <<ALL>>"
 msgstr "HIDE нельзя применить со значением столбцы = <<ALL>>"
 
-#: modifytables.py:239
 msgid "Set Background Color exception: %s %s %s"
 msgstr "Задать исключение для цвета фона: %s %s %s"
 
-#: modifytables.py:362
 msgid ""
-"A specified row or column label number does not exist in a selected table.\n"
-"It will be ignored.  Any column-specific width settings may be incorrect.\n"
-"Label number: %s.  Table size: %s"
+"A specified row or column label number does not exist in a selected table.\nIt"
+" will be ignored.  Any column-specific width settings may be incorrect.\nLabel"
+" number: %s.  Table size: %s"
 msgstr ""
-"Указанная метка строки или столбца не существует в выбранной таблице.\n"
-"Она будет проигнорирована.  Любое заданное значение ширины, относящееся к столбцам может быть некорректным.\n"
-"Номер метки: %s.  Размер таблицы: %s"
+"Указанная метка строки или столбца не существует в выбранной таблице.\nОна "
+"будет проигнорирована.  Любое заданное значение ширины, относящееся к столбцам"
+" может быть некорректным.\nНомер метки: %s.  Размер таблицы: %s"
 
-#: modifytables.py:378
 msgid "Table Labels: %s.  Dimensions: %s, %s"
 msgstr "Метки таблиц: %s.  Измерения: %s, %s"
 
-#: modifytables.py:415
 msgid "APPLYTO expression is invalid: %s"
 msgstr "Выражение APPLYTO неверно: %s"
 
-#: modifytables.py:457
-msgid "Color specification must consist of three integers (R, G, and B values) between 0 and 255"
-msgstr "Спецификация цвета должна состоять из трех целых чисел (R, G и B) со значениям между 0 и 255"
+msgid ""
+"Color specification must consist of three integers (R, G, and B values) "
+"between 0 and 255"
+msgstr ""
+"Спецификация цвета должна состоять из трех целых чисел (R, G и B) со значениям"
+" между 0 и 255"
 
-#: modifytables.py:485
 msgid "function reference %s not valid"
 msgstr "Cсылка функции %s неверна"
 
-#: modifytables.py:493
-msgid ""
-"Invalid custom function signature.\n"
-"Too few arguments: %s"
+msgid "Invalid custom function signature.\nToo few arguments: %s"
 msgstr ""
-"Недопустимая подпись заданной пользователем функции.\n"
-"Слишком мало аргументов: %s"
+"Недопустимая подпись заданной пользователем функции.\nСлишком мало аргументов:"
+" %s"
 
-#: modifytables.py:514 modifytables.py:522
 msgid "Invalid customfunction parameter expression: %s"
 msgstr "Неверное выражение для параметров дополнительной функции: %s"
 

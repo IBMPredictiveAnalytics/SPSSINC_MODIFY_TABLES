@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Modificar tablas</title>
+  <style type="text/css">
+
+  <!-- 
+
+  H1 {font-weight:bold; color:#006699; font-size:125%; }
+  H2 {font-weight:bold; color:#006699; font-size:110%; }
+  TABLE {font-size:100%;}
+
+  /* paragraph tags */
+  .step {text-indent: -1.3em; margin-left:1.3em; margin-top: 0px;}
+  .menuselection {margin-left:10px}
+  .bullet {list-style-type: disc;margin-top:12px; margin-left:36px; text-indent:-1em; }
+  .codeblock {background-color: #ffffe6; display:block; margin-left:5px; padding:5px;}
+
+  /* inline tags */
+  .screen {font-weight:bold; color:#408080}                       /*** used refer to on-screen text ***/
+  .name {font-style: italic}                                                       /*** used to tag names, such as variable names, file names, and so forth ***/
+  .runinhead {font-weight: bold} 
+  .superscript {vertical-align:super; font-size:80%}
+  .subscript {vertical-align:sub; font-size:80%}
+
+
+  --> 
+  </style>
+</head>
+<body>
+<h1>Modificar tablas</h1>
+Modificar tablas aplica estilos de visualización y formato a tablas dinámicas.  Puede
+<ul>
+<li>controlar el aspecto de casillas de datos individuales y etiquetas de filas y columnas.  
+<li>establecer el ancho de columnas específicas u ocultarlas.    
+<li>pivotar las dimensiones de tabla.
+</ul>
+Puede seleccionar tipos específicos de tablas en el visor para decidir a cuáles aplicar estas modificaciones y el ámbito.  
+<p class="bullet">&bull;Las tablas ligeras de la versión 19 no se ven afectadas por este comando, puesto que no se pueden editar.  Está limitación no se aplica a las versiones posteriores.
+
+<p>La especificación de selección se compone de los siguientes elementos:
+<ul>
+<li>Los tipos de tablas que van a procesarse.  Los tipos son los subtipos de tabla SGR.</li>
+<li>La dimensión: filas o columnas (el valor predeterminado es columnas).</li>
+<li>Las filas o columnas específicas, incluidas todas.</li>
+<li>El ámbito de la aplicación: el comando precedente o todo el resultado (el valor predeterminado es el resultado precedente).</li>
+<li>Criterios de selección opcionales específicos del valor de manera que el valor de la casilla debe ser superior a 2.</li>
+<li>Selección opcional de celdas con marcadores de significación</li>
+</ul>
+Las especificaciones de la acción son:
+<ul>
+<li>Ocultar filas o columnas especificadas.</li>
+<li>Establecer anchos para columnas y/o anchos de las etiquetas de fila.</li>
+<li>Establecer el estilo de fuente como normal, negrita, cursiva o negrita cursiva.</li>
+<li>Establecer el color de fuente.</li>
+<li>Establecer el color de fondo.</li>
+<li>Aplicar acciones personalizadas a las casillas especificadas.</li>
+</ul>
+Las especificaciones de selección se realizan en el cuadro de diálogo principal y en el cuadro de diálogo Significación.  Las especificaciones de acción se realizan en el subcuadro de diálogo Acciones.  Si no especifica ninguna acción o si los criterios de selección no encuentran ninguna tabla coincidente, el comando no hará nada.
+
+<h2>Selección de las tablas, dimensión y filas o columnas</h2>
+
+<p>Introduzca el subtipo de tabla SGR en el campo <i>Subtipo de tabla</i>.
+EL subtipo se puede encontrar pulsando con el botón derecho en los titulares en una instancia de la tabla y seleccionando <i>Copiar subtipo OMS</i> o en la lista en <i>Utilidades>Identificadores OMS</i>.  Introduzca * para seleccionar todos los subtipos.</p>
+<p>
+Seleccione <i>Columnas</i> o <i>Filas</i> para determinar la dimensión de la tabla que se va a procesar.  Los anchos sólo se pueden establecer para la dimensión de columna, pero los anchos de etiqueta de fila pueden establecerse independientemente de la dimensión.
+<p>
+En <i>Columnas o filas seleccionadas</i> introduzca una lista separada por espacios en blanco de las filas o columnas específicas que se deben procesar o introduzca "&lt;&lt;TODO&gt;&gt;" para procesar la dimensión entera (incluya las comillas y escriba TODO en mayúsculas).  Las filas o columnas pueden especificarse por posición numérica o por el texto de etiqueta entre comillas.
+<p>Para <i>Nivel para coincidencia de texto</i>, la primera fila o columna (la más externa) es 0.  Utilice números negativos para contar hacia atrás desde el final: -1 es la última fila o columna (las más interna).  Para la coincidencia de texto de etiqueta, incluya el texto entre comillas.  Las mayúsculas y minúsculas y los espacios de la etiqueta deben coincidir exactamente.  Las especificaciones numéricas y de texto se pueden combinar.  Por ejemplo,<br>
+2 3 "Superior"<br>
+selecciona las filas o columnas 2, 3 y una con la etiqueta "Superior".  Si ningún elemento coincide con la especificación, ésta se ignorará.  Las filas o columnas se cuentan en el nivel más interno de la tabla.
+<p>Si se marca <i>El texto anterior es un patrón</i>, cada campo de texto anterior (excepto &lt;&lt;TODO&gt;&gt;) se trata como una expresión regular.
+Por ejemplo, <i>"Sig\."</i> coincidiría con cualquier texto de etiqueta que contenga <i>Sig.</i> .  De lo contrario, la etiqueta coincidirá literalmente con el texto especificado.  Como expresión regular, coincidiría con <i>Sig. asintótica</i> o <i>Sig. bilateral</i> pero no con <i>Sig asintótica</i> (sin punto).  
+Como texto normal, ninguna de las opciones coincidiría.
+Se puede utilizar cualquier expresión regular de Python.  Los patrones distinguen entre mayúsculas y minúsculas y tienen en cuenta la configuración regional.
+<p>Los elementos que parecen números siempre se tratan como posiciones independientemente de la configuración de casilla de verificación.
+<p>Una explicación completa de las expresiones regulares está más allá del ámbito de esta ayuda, pero una característica que merece la pena destacar aquí es la capacidad de crear una expresión negativa.  Supongamos, por ejemplo, que desea seleccionar todas las filas o columnas excepto las que empiecen por "Total".  Puede hacerlo con <br>
+<i>"^(?!Total)"</i> El signo de intercalación (^) inicia la coincidencia al principio de la etiqueta.  El resto sólo es verdadero si el texto siguiente no es <i>Total</i>.
+<p>Las expresiones regulares no se pueden utilizar con especificaciones de ancho de columnas de datos.
+
+<p>Cuando se busca la coincidencia de texto, se utiliza de forma predeterminada el texto del nivel más interno (-1).
+Introduzca más números negativos para salir (por arriba por la izquierda) o números positivos para contar de fuera hacia dentro.  Tenga en cuenta que algunas tablas tienen niveles invisibles en medio lo que se ve, de manera qué es posible que se necesite un poco de experimentación para obtener el nivel correcto.  El nivel 1 suele ser el nivel visible más exterior.
+
+<p>Marque <i>Imprimir etiquetas</i> para ver todas las etiquetas de la dimensión seleccionada.
+Como muchas tablas tienen etiquetas ocultas, utilice esta función para ver toda la estructura.
+<p>De forma predeterminada, se procesan todas las tablas de los tipos especificados en el resultado del procedimiento inmediatamente anterior.  Seleccione <i>Todos los resultados</i> para procesar todos los procedimientos ejecutados anteriormente.
+
+<h2>Subcuadro de diálogo Significación</h2>
+<p>Este subcuadro de diálogo delimita la selección realizada en el diálogo principal a las celdas que cumplen los criterios de significación aquí especificados.
+En la mayoría de los casos, los criterios de significación se utilizarían con la especificación de selección "&lt;&lt;TODO&gt;&gt;" en el cuadro de diálogo principal, pero si hay un subconjunto seleccionado aquí, las especificaciones de significación se aplican dentro de dicho subconjunto.
+</p>
+<p class="bullet">&bull; Este subcuadro de diálogo se aplica solo la versión 24 o posterior de Statistics y a la salida de las tablas personalizadas (CTABLES) dónde los marcadores de significación se muestran en la tabla principal y son del tipo simple (no APA).</p>
+
+<p><i>Selección de celdas significativas:</i> Seleccione <i>Todas las celdas con marcador de significación</i> para seleccionar todas las celdas que tengan algún marcador de significación.  Los marcadores de significación son códigos de letras especiales que aparecen en la celda</p>
+<p>Cómo alternativa, se pueden especificar marcadores de significación específicos que se deberán seleccionar introduciendo un patrón de significación.  El patrón puede ser una simple lista de los marcadores de las columnas.
+Por ejemplo, "AB" solo seleccionaría celdas en las que las columnas con las letras A o B se indican como significativamente diferentes.  Los códigos de letras se muestran en las cabeceras de columna en que los resultados de significación se fusionan en lugar de mostrarse en una tabla distinta.  Puede usar esta opción cuando desee centrarse en unas pocas categorías específicas.<p>
+
+<p>Se producen subtablas a través de las columnas cuando la dimensión de la columna tiene una especificación anidada, como por ejemplo una categoría de trabajo dentro de un género (género &gt; categoría_trabajo) o cuando hay múltiples variables categóricas apiladas en dicha dimensión (categoría_trabajo + género).
+Puede especificar adicionalmente a qué tablas se aplica la selección indicando los números de subtabla después de cada código de letra.  Por ejemplo, <i>A01B2</i> indica que solo las celdas significativas de A se deben seleccionar en las subtablas 0 y 1 y solo los códigos significativos de B se deben seleccionar en la subtabla 2.  Puede identificar las subtablas en el resultado porque la letra de la columna correspondiente a la significación se reinicia a partir de (A) a través de la tabla para cada subtabla.</p>
+
+<p>En una tabla anidada, la dimensión más interna se repite, de manera que probablemente querrá que la selección se aplique entre todas las subtablas anidadas.  No obstante, si hay variables apiladas entre las columnas, el significado de las letras de significación será diferente en cada subtabla y es posible que desee que la selección se aplique solo a subtablas específicas.
+</p>
+<p class="bullet">&bull; La numeración de las subtablas empieza a partir de 0.  Se pueden referenciar hasta 10 subtablas utilizando esta notación.</p>
+
+<p><i>Nivel de significación:</i> se pueden mostrar uno o dos niveles de significación en una tabla.  Si hay dos, los valores más significantes se indican en mayúsculas y los menos significantes en minúsculas.  Al realizar la selección, puede especificar que ambos niveles se seleccionan o que solo se selecciona uno o el otro.  Si solo hay un nivel en la tabla, seleccione Ambos o Superior.</p>
+
+
+<h2>Subcuadro de diálogo Acciones</h2>
+<p>Marque <i>Ocultar las filas o columnas seleccionadas</i> para que estos elementos sean invisibles.
+Esta opción no se puede combinar con ninguna otra acción.
+
+<h3>Establecimiento de anchos de columna</h3>
+<p>En el campo Ancho de columna, introduzca un número en puntos que deba aplicarse a todas las columnas seleccionadas o una lista de números, tantos valores como columnas seleccionadas, para especificar anchos individuales.  Un punto es 1/72 pulgadas.
+(Sugerencia: Para ver el ancho actual de una columna, active la tabla con una doble pulsación, pulse en el borde de una columna y arrástrelo un poco).
+<p>Los anchos de etiqueta de fila pueden controlarse introduciendo posiciones de etiqueta de fila con la misma notación que para seleccionar filas o columnas y un único ancho o un conjunto de anchos.
+
+<h3>Aplicación de estilos</h3>
+Se pueden aplicar estilos a las casillas de datos de una tabla, las etiquetas de la dimensión seleccionada o a ambas.  Seleccione <i>Casillas de datos con la condición</i> (en el cuadro de diálogo principal) para procesar sólo las casillas de datos que cumplan la condición.
+<p>La condición es una expresión verdadero/falso en la que el valor de la celda se representa como x.  Por ejemplo,<br>
+<br>x &lt; .05 </br>
+seleccionaría únicamente celdas de datos cuyo valor sea inferior a .05.
+La expresión se interpreta como código Python.  Se pueden utilizar los operadores lógicos y de comparación ordinarios. <i>abs(x)</i> es el valor absoluto de la celda.
+<p>
+<i>i</i> sustituye al número de filas o columnas en la dimensión opuesta a la dimensión SELECT.  Por ejemplo<br>
+i % 2 == 1<br>
+(% es el operador mod de Python) seleccionaría las columnas con numeración impar si la dimensión seleccionada es filas.
+<p>
+<i>ii</i> sustituye a la fila o columna de la dimensión SELECT.  Especificación
+<br>
+ii % 2 == 1
+<br>
+Utilizarse para aplicar un estilo a las filas con numeración impar si la dimensión SELECT es filas.
+<p>
+Utilice siempre un punto (.) al especificar un valor decimal aunque en su configuración regional la coma sea la separación decimal habitual.
+<p>
+Seleccione un estilo de texto, color y color de fondo utilizando los controles adecuados.  Los colores se representan como tres números: uno para el componente rojo, uno para el verde y uno para el azul.  Los valores deben estar entre 0, ninguno, y 255, máximo.  Por ejemplo, 0 0 0 es negro, 255 255 255 es blanco y 255 0 0 es rojo.  El amarillo se compone de partes iguales de rojo y verde.
+<p>
+Si tiene una función personalizada que se debe aplicar a las celdas especificadas, introdúzcala aquí como<br>
+nombremódulo.nombrefunción<br>
+Consulte el módulo de Python customstylefunctions.py para obtener información detallada y ejemplos sobre cómo escribir dichas funciones.
+<p>Las funciones personalizadas pueden tener parámetros.  Para especificar uno o más parámetros, escriba los nombres y valores de parámetros e incluya la lista de parámetros entre paréntesis.
+Por ejemplo,<br>
+customstylefunctions.stripeOddRows2(r=20,g=20,b=200)
+<br>
+aplicaría la función stripeOddRows2 en el módulo customstylefunctions.  Obtendrá tres parámetros, r, g y b (para rojo, verde y azul), con los valores 20, 20 y 200, respectivamente.  Consulte la documentación de cualquier función personalizada en particular para conocer qué parámetros acepta.  Los nombres de parámetros deben escribirse siguiendo las mayúsculas y minúsculas especificadas en la definición de función.
+<p>Si el valor del parámetro es una cadena, inclúyala entre comillas simples, por ejemplo<br>
+option='ambos'
+<br>
+<h3>Aspectos de tabla</h3>
+Puede aplicar un aspecto de tabla a toda la tabla seleccionando Aplicar aspecto de tabla y especificando un archivo de aspecto de tabla.  Los archivos de aspecto de tabla tienen la extensión stt.
+El aspecto de tabla se aplica a toda la tabla independientemente de la configuración del cuadro de diálogo principal.
+<h3>Selección de los colores adecuados</h3>
+Los mejores colores para una presentación dependen de su objetivo y las características del dispositivo en el que se visualizará.  Es posible que siempre quiera enfatizar filas o columnas específicas o que quiera enfatizar valores típicos o inusuales.  El mejor esquema de colores puede variar dependiendo de si se visualizará en una pantalla, impresa o proyectada.  También es posible que haya un esquema de colores corporativo obligatorio.
+Puede obtener ayuda y coordenadas RGB en
+<br><u>
+http://www.personal.psu.edu/cab38/ColorBrewer/ColorBrewer.html </u>.
+<br>Aunque este sitio trata sobre mapas, algunos de los consejos también pueden resultarle útiles para las tablas (o para los gráficos).
+<p>Las funciones <i>customstylefunctions.qualitative</i> y <i>customstylefunctions.pastelqualitative</i> pueden utilizarse para aplicar estos esquemas de colores a las columnas de una tabla.
+<h2>El módulo customstylefunctions</h2>
+Este módulo, que se incluye en el comando SPSSINC MODIFY TABLES, contiene muchas funciones que amplían el conjunto de acciones mostrado de forma explícita en este cuadro de diálogo y que pueden utilizarse mediante el campo <i>Aplicar función personalizada</i>.
+Ésta es una lista de estas funciones.
+Los comentarios del módulo muestran los detalles de uso.
+<ul>
+<li>blankTableTriangle</li>
+<li>boldIfEndsWithAtoZLetter</li>  
+<li>colorCrosstabResiduals</li>  
+<li>colorIfEndsWithAtoZLetter</li>
+<li>generic</li>  
+<li>hideFootnotes</li>  
+<li>hideAllFootnotes</li>
+<li>hideNonfinalRows</li>  
+<li>HideRowBasedOnValues</li>
+<li>makeSigCoefsBold</li>  
+<li>moveColumnsToLayers</li>  
+<li>moveColumnsToRows</li>  
+<li>moveLayersToColumns</li>  
+<li>moveLayersToRows</li>  
+<li>moveRowDimension</li>  
+<li>moveRowsToColumns</li>  
+<li>moveRowsToLayers</li>  
+<li>pastelqualitative</li>  
+<li>qualitative</li>  
+<li>reletter</li>
+<li>roundToFormat</li>  
+<li>SetAlignment</li>
+<li>SetCellMargins</li>
+<li>SetDecimalPlaces</li>
+<li>SetLeadingZero</li>
+<li>SetNumericFormat</li>  
+<li>SetNumericFormatAndDecimals</li>  
+<li>SetTwoDecimalPlaces</li>  
+<li>showcorner</li>
+<li>sortTable</li>
+<li>spreadsig</li>
+<li>stripeOddDataRows</li>  
+<li>stripeOddRows</li>  
+<li>stripeOddRows2</li>  
+<li>transpose</li>  
+<li>washColumnBackgrounds</li>  
+<li>washColumns</li>  
+<li>washColumnsBlue</li> 
+</uL>
+<h2>Características adicionales</h2>
+<p>
+Este cuadro de diálogo genera la sintaxis del comando de extensión SPSSINC MODIFY TABLES. Para mostrar la ayuda de este comando, ejecute la siguiente sintaxis:
+</p>
+<p class="codeblock">SPSSINC MODIFY TABLES /HELP.</p>
+En la sintaxis del comando puede especificar una lista de subtipos entrecomillados individualmente.
+<h2>Requisitos</h2>
+<p>
+Este cuadro de diálogo requiere el complemento de integración de Python y el comando de extensión SPSSINC MODIFY TABLES. 
+</p>
+<p style="font-size:80%;">Copyright IBM Corp. 1989, 2015</p>
+</body>
+</html>
+
