@@ -1,114 +1,99 @@
-#/***********************************************************************
-# * Licensed Materials - Property of IBM 
-# *
-# * IBM SPSS Products: Statistics Common
-# *
-# * (C) Copyright IBM Corp. 1989, 2011
-# *
-# * US Government Users Restricted Rights - Use, duplication or disclosure
-# * restricted by GSA ADP Schedule Contract with IBM Corp. 
-# ************************************************************************/
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Translations template for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
+
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2010-01-08 07:54+Mountain Standard Time\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-10-11 00:32-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: ENCODING\n"
-"Generated-By: pygettext.py 1.5\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Globalization Pipeline\n"
 
-
-#: modifytables.py:101
 msgid "---"
 msgstr "---"
 
-#: modifytables.py:108
 msgid "Information"
 msgstr "Informazioni"
 
-#: modifytables.py:170
 msgid "HIDE cannot be combined with other actions"
 msgstr "Impossibile combinare HIDE con altre azioni"
 
-#: modifytables.py:175
 msgid "Row or column specification must be a sequence of one or more values"
-msgstr "La specifica di righe o colonne deve essere una sequenza di uno o più valori"
+msgstr ""
+"La specifica di righe o colonne deve essere una sequenza di uno o più valori"
 
-#: modifytables.py:178
 msgid "The rows dimension cannot be combined with resizing"
-msgstr "La dimensione della riga non può essere combinata con il ridimensionamento"
+msgstr ""
+"La dimensione della riga non può essere combinata con il ridimensionamento"
 
-#: modifytables.py:182
 msgid "Regular expression mode is not available with widths"
 msgstr "La modalità di espressione regolare non è disponibile con le larghezze"
 
-#: modifytables.py:184
-msgid "The number of column sizes specified is different from number of columns specified."
-msgstr "Il numero di dimensioni di colonna specificato è diverso dal numero di colonne specificato."
+msgid ""
+"The number of column sizes specified is different from number of columns "
+"specified."
+msgstr ""
+"Il numero di dimensioni di colonna specificato è diverso dal numero di colonne"
+" specificato."
 
-#: modifytables.py:188
 msgid "ROWLABELS and ROWLABELWIDTHS must be specified together"
 msgstr "ROWLABELS e ROWLABELWIDTHS devono essere specificati insieme"
 
-#: modifytables.py:193
-msgid "The number of row label sizes specified is different from number of row labels specified."
-msgstr "Il numero di dimensioni di etichette di riga specificato è diverso dal numero di etichette di riga specificato."
+msgid ""
+"The number of row label sizes specified is different from number of row labels"
+" specified."
+msgstr ""
+"Il numero di dimensioni di etichette di riga specificato è diverso dal numero "
+"di etichette di riga specificato."
 
-#: modifytables.py:196
 msgid "SELECT is required unless ROWLABELS is specified"
 msgstr "SELECT è obbligatorio a meno che non sia specificato ROWLABELS"
 
-#: modifytables.py:214
 msgid "HIDE cannot be applied with columns = <<ALL>>"
 msgstr "Impossibile applicare HIDE alle colonne = <<ALL>>"
 
-#: modifytables.py:239
 msgid "Set Background Color exception: %s %s %s"
 msgstr "Eccezione Imposta colore di sfondo: %s %s %s"
 
-#: modifytables.py:362
 msgid ""
-"A specified row or column label number does not exist in a selected table.\n"
-"It will be ignored.  Any column-specific width settings may be incorrect.\n"
-"Label number: %s.  Table size: %s"
+"A specified row or column label number does not exist in a selected table.\nIt"
+" will be ignored.  Any column-specific width settings may be incorrect.\nLabel"
+" number: %s.  Table size: %s"
 msgstr ""
-"In una tabella selezionata non esiste un numero di etichetta di riga o colonna specificata.\n"
-"Verrà ignorata.  Eventuali impostazioni di larghezza specifiche della colonna potrebbero non essere corrette.\n"
-"Numero etichetta: %s.  Dimensioni tabella: %s"
+"In una tabella selezionata non esiste un numero di etichetta di riga o colonna"
+" specificata.\nVerrà ignorata.  Eventuali impostazioni di larghezza specifiche"
+" della colonna potrebbero non essere corrette.\nNumero etichetta: %s.  "
+"Dimensioni tabella: %s"
 
-#: modifytables.py:378
 msgid "Table Labels: %s.  Dimensions: %s, %s"
 msgstr "Etichette tabella: %s.  Dimensioni: %s, %s"
 
-#: modifytables.py:415
 msgid "APPLYTO expression is invalid: %s"
 msgstr "Espressione APPLYTO non valida: %s"
 
-#: modifytables.py:457
-msgid "Color specification must consist of three integers (R, G, and B values) between 0 and 255"
-msgstr "La specifica del colore deve includere tre interi (valori R, G e B) compresi tra 0 e 255"
+msgid ""
+"Color specification must consist of three integers (R, G, and B values) "
+"between 0 and 255"
+msgstr ""
+"La specifica del colore deve includere tre interi (valori R, G e B) compresi "
+"tra 0 e 255"
 
-#: modifytables.py:485
 msgid "function reference %s not valid"
 msgstr "riferimento funzione %s non valido"
 
-#: modifytables.py:493
-msgid ""
-"Invalid custom function signature.\n"
-"Too few arguments: %s"
+msgid "Invalid custom function signature.\nToo few arguments: %s"
 msgstr ""
-"Firma della funzione personalizzata non valida.\n"
-"Numero troppo basso di argomenti: %s"
+"Firma della funzione personalizzata non valida.\nNumero troppo basso di "
+"argomenti: %s"
 
-#: modifytables.py:514 modifytables.py:522
 msgid "Invalid customfunction parameter expression: %s"
 msgstr "Espressione parametro customfunction non valida: %s"
 

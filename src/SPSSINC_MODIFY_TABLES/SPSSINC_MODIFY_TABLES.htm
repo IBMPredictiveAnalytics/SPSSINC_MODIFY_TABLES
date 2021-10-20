@@ -1,0 +1,307 @@
+<html>
+<head>
+<title>Modify Tables</title>
+<STYLE TYPE="text/css"> 
+<!-- 
+
+H1 {font-weight:bold; color:#006699; font-family:Verdana, Arial, sans-serif;font-size:125%; }
+H2 {font-weight:bold; color:#006699; font-family:Verdana, Arial, sans-serif;font-size:110%; }
+BODY {font-family:Verdana, Arial, sans-serif;font-size:80%; }
+TABLE {font-size:100%;font-family:Verdana, Arial, sans-serif;}
+
+/* paragraph tags */
+.step {text-indent: -1.3em; margin-left:1.3em; margin-top: 0px;}
+.step-glyph { font-family: Arial, Helvetica, sans-serif; }
+.menuselection {margin-left:10px}
+.bullet {list-style-type: disc;margin-top:12px; margin-left:36px; text-indent:-1em; }
+.codeblock {background-color: #ffffe6; display:block; margin-left:5px; padding:5px;font-family:"courier new",monospace; }
+
+/* inline tags */
+.code {font-family: Courier,fixed pitch;}                           /*** used to tag pieces of code (syntax, Python, R, HTML, etc.)   ***/
+.screen {font-weight:bold; color:#408080}                       /*** used refer to on-screen text ***/
+.name {font-style: italic}                                                       /*** used to tag names, such as variable names, file names, and so forth ***/
+.runinhead {font-weight: bold} 
+.superscript {vertical-align:super; font-size:80%}
+.subscript {vertical-align:sub; font-size:80%}
+.symbol {font-family: Symbol}
+
+--> 
+</STYLE>
+<body>
+<h1>Modify Tables</h1>
+Modify Tables applies display styles and formatting to pivot tables.  You can
+<ul>
+<li>control the appearance of individual data cells and row and column labels.  
+<li>set the width of particular
+columns or hide them.    
+<li>pivot table dimensions.
+</ul>
+You can select specific types of tables in the Viewer to which to apply these modifications 
+and the scope.  
+<p class="bullet">&bull;Lightweight tables in Version 19 are
+not affected by this command, since they cannot be edited.  This limitation does not apply
+to later versions.
+
+<p>The selection specification consists of the following items:
+<ul>
+<li>The types of tables to be processed.  Types are the OMS table subtypes.</li>
+<li>The dimension: rows or columns (default is columns).</li>
+<li>The particular rows or columns, including all.</li>
+<li>The scope of application: the preceding command or all output (default is preceding output).</li>
+<li>Optional value-specific selection criteria such as that the cell value must be larger than 2.</li>
+<li>Optional selection of cells with significance markers</li>
+</ul>
+The action specifications are:
+<ul>
+<li>Hide specified rows or columns.</li>
+<li>Set widths for columns and/or widths of the row labels.</li>
+<li>Set font style to regular, bold, italic, or bolditalic.</li>
+<li>Set font color.</li>
+<li>Set background color.</li>
+<li>Apply custom actions to the specified cells.</li>
+</ul>
+Selection specifications are made on the main dialog and on the Significance subdialog.  Action specifications are made
+on the Actions subdialog.  If you do not specify any actions or if the selection criteria do
+not find any tables that match, the command will silently do nothing.
+
+<h2>Selecting the Tables, Dimension, and Rows or Columns</h2>
+
+<p>Enter the OMS table subtype in the <i>Table Subtype</i> field.
+The subtype can be found by right clicking in the outline on an
+instance of the table and selecting <i>Copy OMS subtype</i> or
+from the list in <i>Utilities>OMS Identifiers</i>.  Enter * to
+select all of the subtypes.</p>
+<p>
+Choose <i>Columns</i> or <i>Rows</i> to determine the dimension
+of the table to process.  Widths can only be set for the column
+dimension, but row label widths can be set regardless of
+the dimension.
+<p>
+In <i>Selected Columns or Rows</i> enter a blank-separated list of the particular rows or
+columns to process or enter "&lt;&lt;ALL&gt;&gt;" to process the entire
+dimension (include the quotes and capitalize ALL).  Rows or columns
+can be specified by numerical position or by the label text in quotes.
+<p>For <i>Level for Text Matching</i>, the first (outermost) row or column is 0.  Use negative numbers
+to count back from the end: -1 is the last (innermost) row or column.  For label
+text matching, enclose the text in quotation marks.  Match the case
+of the label and any blanks it contains exactly.  Numerical and text specifications
+can be combined.  For example,<br>
+2 3 "Upper"<br>
+selects rows or columns 2, 3, and one labeled "Upper".  If no item
+matches the specification, it is ignored.  Rows or columns are
+counted at the innermost level of the table.
+<p>If <i>Text above is patterns</i> 
+is checked, each text field above (except &lt;&lt;ALL&gt;&gt;) is treated as a regular expression.
+For example, <i>"Sig\."</i> would match any label text that contains <i>Sig.</i> .  Otherwise,
+the label is matched literally with the specified text.  As a regular expression, this would
+match <i>Asympt Sig.</i> or <i>Two-tailed Sig.</i> but not <i>Asympt Sig</i> (no period).  
+As plain text, neither would match.
+Any Python regular expressions can be used.  Patterns are case sensitive and locale aware.
+<p>Items that look like numbers are always treated as positions regardless of the checkbox
+setting.
+<p>A full explanation of regular expressions is beyond the scope of this help, but one feature worth
+pointing out here is the ability to create a negative expression.  Suppose, for example, you want to
+select all rows or column except those starting with "Total".  This can be done with <br>
+<i>"^(?!Total)"</i>
+The carat (^) starts the match at the beginning of the label.  The remainder is true only if
+the next text is not <i>Total</i>.
+<p>Regular expressions cannot be used with data column width specifications.
+
+<p>When matching text, by default the text at the innermost level (-1) is used.
+Enter more negative numbers to move out (up or left) or positive numbers to
+count from the outside in.  Note that some tables have invisible
+levels inbetween what you see, so some experimentation may be
+required to get the level correct.  Level 1 is usually the
+outmost visible level.
+
+<p>Check <i>Print labels</i> in order to see all the labels in the selected dimension.
+Since many tables have hidden labels, use this to see the full structure.
+<p>By default, all tables of the specified types in the immediately preceding
+procedure output are processed.  Select <i>All output</i> to process
+all previously executed procedures.
+
+<h2>Significance Subdialog</h2>
+<p>This subdialog narrows the selection made on the main dialog
+to those cells that meet the significance criteria specified here.
+In most cases, the significance criteria would be used with the "&lt;&lt;ALL>>" selection specification on the main dialog, but if there is a subset selected there,
+the significance specifications are applied within that.
+</p>
+<p class="bullet">&bull; This subdialog applies only to Statistics version
+24 or later and to output from Custom Tables (CTABLES) where significance
+markers are shown in the main table and are the simple (not APA) type.</p>
+
+<p><i>Significant Cell Selection:</i> Choose <i>All cells with significance marker</i>
+to select all the cells with any significance marker.  Significance markers are special letter codes that appear in the cell</p>
+<p>Alternatively, you can specify the specific significance markers to be selected by
+entering a significance pattern.  The pattern can be a simple list of the column markers.
+For example, "AB" would select only cells where columns lettered A or B are listed as significantly
+different.  The letter codes are shown in the column headers when significance results are merged rather than being shown in a separate table.  You might use this when
+you want to focus on a few specific categories.<p>
+
+<p>Subtables  across the columns occur when the column dimension
+has a nested specification such as job category within gender (gender > jobcat), or when there are multiple categorical variables stacked in that dimension (jobcat + gender).
+You can further specify which subtables the selection applies
+to by listing the subtable numbers after each letter code.  For example,
+<i>A01B2</i> indicates that only A-significant cells should be selected in subtables 0 and 1 and
+only B-significant codes should be selected in subtable 2.  You can identify subtables in the
+output, because the column lettering for significance restarts from (A) across the table for each subtable.</p>
+
+<p>In a nested table, the innermost dimension repeats, so you would probably
+want the selection to apply across all the nested subtables.  However, if variables are stacked
+across the columns, the meaning of the significance letters will be different in each
+subtable, and you might  want the selection to apply only to particular subtables.
+</p>
+<p class="bullet">&bull; Subtable numbering starts from 0.  Up to ten subtables
+can be referenced using this notation.</p>
+
+<p><i>Significance Level:</i> One or two significance levels can be shown in a table.  If there are two, the more significant values are indicated in upper case letters and the less significant in lower case.  In selecting, you can specify that both levels are selected or that only one or the other is selected.  If there is only one level in the table, choose Both or Upper.</p>
+
+
+<h2>Actions Subdialog</h2>
+<p>Check <i>Hide selected rows or columns</i> to make these items invisible.
+This option cannot be combined with any other action.
+
+<h3>Setting Column Widths</h3>
+<p>In the column width field, enter a number in points to
+apply to all selected columns or a list of numbers, as many values as
+there are columns selected, to specify
+individual widths.  One point is 1/72 inch.
+(Hint: to see the current width of a column, activate the table by
+double clicking, click on a column border, and drag slightly.)
+<p>Row label widths can be controlled by entering row label positions
+using the same notation as for selecting rows or columns and a single
+width or a set of widths.
+
+<h3>Applying Styles</h3>
+Styles can be applied to the data cells of a table, the labels in the
+selected dimension, or both.  Select <i>Data cells on condition</i>
+(on the main dialog) to process only data cells meeting the condition.
+<p>The condition is a true/false expression in which the cell value
+is represented as x.  For example,<br>
+x < .05<br>
+would select only data cells where the cell value is less than .05.
+The expression is interpreted as Python code.  The ordinary logical and
+comparison operators can be used. <i>abs(x)</i> is the absolute value
+of the cell.
+<p>
+<i>i</i> stands for the row or column number in the
+opposite dimension to the SELECT dimension.  For example<br>
+i % 2 == 1<br>
+(% is the Python mod operator) would select the odd-numbered columns if
+the selected dimension is rows.
+<p>
+<i>ii</i> stands for the row or column in the SELECT dimension.  Specifying
+<br>
+ii % 2 == 1
+<br>
+could be used to apply a style to the odd-numbered rows if the SELECT dimension is rows.
+<p>
+Always use dot (.) when specifying a decimal value even if, in your locale, the comma
+is the usual decimal point symbol.
+<p>
+Select a text style, color, and background color using the appropriate
+controls.  Colors are represented as three numbers, one for the 
+red component, one for green, and one for blue.  The values must
+be between 0, none, and 255, maximum.  For example, 0 0 0 is black, 255 255 255 is
+white, 255 0 0 is red.  Yellow consists of equal parts of red and green.
+<p>
+If you have a custom function to be applied to the specified
+cells, enter it here as<br>
+modulename.functionname<br>
+See the Python module customstylefunctions.py for
+details and examples on how to write such functions.
+<p>Custom functions can have parameters.  To specify one or more parameters,
+enclose the parameter list in parentheses and write the parameter names and values.
+For example,<br>
+customstylefunctions.stripeOddRows2(r=20,g=20,b=200)
+<br>
+would apply the stripeOddRows2 function in the customstylefunctions module.  It will get
+three parameters, r, g, and b (for red, green, and blue) with values 20, 20, and 200,
+respectively.  Consult the documentation for any particular custom function to find
+out what parameters it accepts.  Parameter names must be written in the case
+as specified in the function definition.
+<p>If the parameter value is a string, enclose it in single quotes, e.g.<br>
+option='both'
+<br>
+<h3>TableLooks</h3>
+You can apply a tablelook to the entire table by checking Apply tablelook
+and specifying a tablelook file.  Tablelook files have extension stt.
+The tablelook applies to the entire table regardless of the settings on the main dialog.
+<h3>Choosing the Right Colors</h3>
+The best colors for a presentation depend on its purpose and
+the device characteristics where it will be viewed.  You may always want 
+to emphasize particular rows or columns, or you may want
+to emphasize typical or unusual values.  Your best color scheme
+may vary according to whether it will be viewed on a screen, printed,
+or projected.  Or there may be a corporate color scheme required.
+You can get advice and RGB coordinates at
+<br><u>
+http://www.personal.psu.edu/cab38/ColorBrewer/ColorBrewer.html
+</u>.
+<br>While this site is about maps, some of the advice may also
+be useful for tables (or for your charts).
+<p>The functions <i>customstylefunctions.qualitative</i> and <i>customstylefunctions.pastelqualitative</i>
+can be used to apply these color schemes to the columns of a table.
+<h2>The customstylefunctions Module</h2>
+This module, which is included with the SPSSINC MODIFY TABLES command, contains many functions
+that extend the set of actions explicitly shown in this dialog and can be used via the
+<i>Apply Custom Function</i> field.
+Here is a list of these functions.
+Comments in the module show usage details.
+<ul>
+<li>blankTableTriangle</li>
+<li>boldIfEndsWithAtoZLetter</li>  
+<li>colorCrosstabResiduals</li>  
+<li>colorIfEndsWithAtoZLetter</li>
+<li>generic</li>  
+<li>hideFootnotes</li>  
+<li>hideAllFootnotes</li>
+<li>hideNonfinalRows</li>  
+<li>HideRowBasedOnValues</li>
+<li>makeSigCoefsBold</li>  
+<li>moveColumnsToLayers</li>  
+<li>moveColumnsToRows</li>  
+<li>moveLayersToColumns</li>  
+<li>moveLayersToRows</li>  
+<li>moveRowDimension</li>  
+<li>moveRowsToColumns</li>  
+<li>moveRowsToLayers</li>  
+<li>pastelqualitative</li>  
+<li>qualitative</li>  
+<li>reletter</li>
+<li>roundToFormat</li>  
+<li>SetAlignment</li>
+<li>SetCellMargins</li>
+<li>SetDecimalPlaces</li>
+<li>SetLeadingZero</li>
+<li>SetNumericFormat</li>  
+<li>SetNumericFormatAndDecimals</li>  
+<li>SetTwoDecimalPlaces</li>  
+<li>showcorner</li>
+<li>sortTable</li>
+<li>spreadsig</li>
+<li>stripeOddDataRows</li>  
+<li>stripeOddRows</li>  
+<li>stripeOddRows2</li>  
+<li>transpose</li>  
+<li>washColumnBackgrounds</li>  
+<li>washColumns</li>  
+<li>washColumnsBlue</li> 
+</uL>
+<h2>Additional Features</h2>
+<p>
+This dialog generates syntax for the SPSSINC MODIFY TABLES extension command. To display help for this command,
+run the following syntax:
+</p>
+<p class="codeblock">SPSSINC MODIFY TABLES /HELP.</p>
+In command syntax you can specify a list of individually quoted subtypes.
+<h2>Requirements</h2>
+<p>
+This dialog requires the Integration Plug-In for Python and the SPSSINC MODIFY TABLES extension command. 
+</p>
+<br/>
+<hr/>
+<p style="font-family:Verdana, Arial, sans-serif;font-size:80%;">© Copyright IBM Corp. 1989, 2015</p>
+</body>
+</html>
+

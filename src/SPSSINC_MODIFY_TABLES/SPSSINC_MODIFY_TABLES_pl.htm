@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Modyfikuj tabele</title>
+  <style type="text/css">
+
+  <!-- 
+
+  H1 {font-weight:bold; color:#006699; font-size:125%; }
+  H2 {font-weight:bold; color:#006699; font-size:110%; }
+  TABLE {font-size:100%;}
+
+  /* paragraph tags */
+  .step {text-indent: -1.3em; margin-left:1.3em; margin-top: 0px;}
+  .menuselection {margin-left:10px}
+  .bullet {list-style-type: disc;margin-top:12px; margin-left:36px; text-indent:-1em; }
+  .codeblock {background-color: #ffffe6; display:block; margin-left:5px; padding:5px;}
+
+  /* inline tags */
+  .screen {font-weight:bold; color:#408080}                       /*** used refer to on-screen text ***/
+  .name {font-style: italic}                                                       /*** used to tag names, such as variable names, file names, and so forth ***/
+  .runinhead {font-weight: bold} 
+  .superscript {vertical-align:super; font-size:80%}
+  .subscript {vertical-align:sub; font-size:80%}
+
+
+  --> 
+  </style>
+</head>
+<body>
+<h1>Modyfikuj tabele</h1>
+Funkcja Modyfikuj tabele powoduje zastosowanie styli i formatowania do tabel przestawnych.  Można
+<ul>
+<li>modyfikować wygląd poszczególnych komórek i wierszy z danymi oraz etykiet kolumn;
+<li>ustawić szerokość poszczególnych kolumn lub ukryć je;
+<li>ustawić wymiary tabeli przestawnej.
+</ul>
+Można wybrać różne typy tabel w oknie wynikowym (Viewer), do których mają się odnosić te modyfikacje i zakres.  
+<p class="bullet">&bull;Komenda ta nie wpływa na tabele Lightweight w wersji 19, gdyż tabel tych nie można edytować.  Ograniczenie to nie dotyczy starszych wersji.
+<p>Specyfikacja wyboru zawiera następujące elementy:
+<ul>
+<li>Typy tabel do przetworzenia.  Typami są podtypy tabel dostępne w komendzie OMS.</li>
+<li>Wymiar: wiersze lub kolumny (wartość domyślna to kolumny)</li>
+<li>Poszczególne wiersze lub kolumny, w tym wszystkie.</li>
+<li>Zakres zastosowania: poprzedzające polecenie lub cały raport (wartością domyślną jest poprzedzające polecenie).</li>
+<li>Opcjonalne kryteria wyboru specyficzne dla wartości, np. wartość komórki musi być większa niż 2.</li>
+<li>Opcjonalny wybór komórek ze znacznikami istotności</li>
+</ul>
+Określone działania to:
+<ul>
+<li>Ukryj wskazane wiersze lub kolumny.</li>
+<li>Ustaw szerokości kolumn i/lub szerokości etykiet wierszy.</li>
+<li>Ustaw styl czcionki na standardowy, pogrubiony, kursywa lub pogrubiona kursywa.</li>
+<li>Ustaw kolor czcionki.</li>
+<li>Ustaw kolor tła.</li>
+<li>Zastosuj działania niestandardowe do określonych komórek.</li>
+</ul>
+Specyfikacje wyboru są dokonywane w głównym oknie dialogowym oraz w podrzędnym oknie dialogowym Istotność.  Specyfikacje działań są dokonywane w podrzędnym oknie dialogowym Działania.  Jeśli nie określisz żadnych działań lub jeśli kryteria wyboru
+nie znajdą żadnych pasujących tabel, komenda nie przyniesie żadnego efektu.
+
+<h2>Wybór tabel, wymiarów oraz wierszy lub kolumn</h2>
+
+<p>Wprowadź podtyp tabeli OMS w polu <i>Podtyp tabeli</i>.
+Podtyp można znaleźć, klikając prawym przyciskiem myszy w strukturze raportu na instancji tabeli i wybierając opcję <i>Kopiuj typ tabeli  OMS</i> lub wybrać z menu pozycje <i>Narzędzia>Identyfikatory OMS</i>.  Wprowadź symbol * w celu
+wyboru wszystkich podtypów.</p>
+<p>
+Wybierz opcję <i>Kolumny</i> lub <i>Wiersze</i> w celu określenia wymiarów przetwarzanej tabeli.  Szerokości można ustawić wyłącznie dla wymiarów kolumn, natomiast szerokości etykiet wierszy można ustawić niezależnie od wymiaru.
+<p>
+W polu <i>Wybrane kolumny lub wiersze</i> wprowadzić listę wierszy lub kolumn do przetworzenia (rozdzielanych spacjami) lub wprowadzić wartość "&lt;&lt;ALL&gt;&gt;" w celu przetworzenia całego wymiaru (wartość ALL należy zapisać wielkimi literami w cudzysłowie). Wiersze lub kolumny można określić, wprowadzając pozycję numeryczną lub tekst etykiety w cudzysłowie.
+<p>W przypadku pola <i>Poziom dla dopasowania tekstu</i> pierwszy (skrajny) wiersz lub kolumna ma wartość 0.  W celu zliczania od końca należy użyć cyfr ujemnych: -1 jest ostatnim (najbardziej wewnętrznym) wierszem lub kolumną.  W przypadku niedopasowania tekstu zapisz tekst w cudzysłowie.  Dopasuj wielkość liter etykiety i wszelkich pustych miejsc w niej zawartych.  Specyfikacje numeryczne i tekstowe można łączyć.  Na przykład,<br>
+2 3 "Upper"<br>
+powoduje wybranie wierszy lub kolumn o numerach 2, 3 oraz jednej oznaczonej jako "Upper".  Jeśli żadna pozycja nie spełnia tej specyfikacji, jest ona ignorowana.  Wiersze lub kolumny są zliczane przy najbardziej wewnętrznym poziomie tabeli.<p>Jeśli wybrano opcję <i>Teksty powyżej to wzorce</i>, każde pole tekstowe znajdujące się powyżej (z wyjątkiem &lt;&lt;ALL&gt;&gt;) jest traktowane jako wyrażenie regularne.
+Np. wyrażenie <i>"Sig\."</i> spowodowałoby dopasowanie wszystkich tekstów etykiet, które zawierają wartość <i>Sig.</i> .  W przeciwnym razie etykieta jest dopasowywana dokładnie do podanego tekstu.  Jako wyrażenie regularne, spowodowałoby ono dopasowanie etykiet <i>Asympt Sig.</i> lub <i>Two-tailed Sig.</i>, ale nie wykryłoby etykiety <i>Asympt Sig</i> (brak kropki).
+Jako zwykły tekst, żadna z etykiet nie zostałaby dopasowana.
+Można użyć dowolnego wyrażenia regularnego Python.  We wzorcach rozróżniana jest wielkość liter i kodowanie lokalne.
+<p>Elementy, które wyglądają jak liczby, są zawsze traktowane jako pozycje, niezależnie od ustawienia wybranego w polu wyboru.
+<p>Pełne objaśnienie wyrażeń regularnych wykracza poza zakres tego tematu pomocy, ale jedną cechą, na którą warto zwrócić uwagę jest możliwe tworzenia wyrażeń negatywnych.  Załóżmy, na przykład, że chcesz wybrać wszystkie wiersze lub kolumny oprócz tych zaczynających się od wartości "Total".   Można tego dokonać za pomocą wyrażenia <br>
+<i>"^(?!Total)"</i>
+Kareta (^) rozpoczyna dopasowanie na początku etykiety.  Reszta jest prawdziwa tylko wtedy, gdy
+następny tekst nie jest wartością <i>Total</i>.
+<p>Wyrażeń regularnych nie można używać ze specyfikacjami szerokości kolumn z danymi.
+
+<p>Podczas dopasowywania tekstu domyślnie wykorzystywany jest tekst przy najbardziej wewnętrznym poziomie (-1).
+Wprowadź więcej liczb ujemnych, aby przesunąć się (w górę lub w lewo) lub liczb dodatnich, aby zliczać od zewnątrz do wewnątrz.  Należy pamiętać o tym, że w niektórych tabelach między widocznymi poziomami mogą być obecne poziomy niewidoczne, dlatego w celu uzyskania prawidłowego poziomu może być konieczne podjęcie kilku prób.  Zwykle poziom 1 to najbardziej skrajny, widoczny poziom.
+
+<p>W celu wyświetlenia wszystkich etykiet w wybranych wymiarze zaznacz pole <i>Drukuj etykiety</i>.
+Z uwagi na to, że w wielu tabelach etykiety mogą być ukryte, opcji tej można użyć do przejrzenia całej struktury.
+<p>Domyślnie przetwarzane są wszystkie tabele określonego typu zawarte w wynikach najnowszej procedury.  Wybierz opcję <i>Wszystkie wyniki</i>, aby przetworzyć wszystkie poprzednio wykonane procedury.
+
+<h2>Podrzędne okno dialogowe Istotność</h2>
+<p>To podrzędne okno dialogowe zawęża wybór dokonany w głównym oknie dialogowym
+do tych komórek, które spełniają określone kryteria istotności.
+W większości przypadków kryteria istotności byłyby używane z wyborem "&lt;&lt;ALL>>" dokonanym w głównym oknie dialogowym, jednak jeśli w oknie tym wybrano podzbiór, specyfikacje istotności są stosowane w ramach tego podzbioru.
+</p>
+<p class="bullet">&bull; To podrzędne okno dialogowe ma zastosowanie tylko do wersji programu Statistics 24 lub nowszej oraz do wyników z tabel niestandardowych (CTABLES), w których znaczniki istotności są wyświetlane w głównej tabeli i są to znaczniki typu prostego (nie APA).</p>
+
+<p><i>Wybór komórek istotnych:</i> wybierz opcję <i>Wszystkie komórki ze znacznikiem istotności</i>, aby
+wybrać wszystkie komórki z dowolnym znacznikiem istotności.  Znaczniki istotności to specjalne kody literowe, które są widoczne w komórce</p>
+<p>Można również wskazać określone znaczniki istotności do wyboru, wprowadzając wzorzec istotności.  Wzorzec może być prostą listą znaczników kolumn.
+Np. wprowadzenie wzorca "AB" spowoduje wybranie wyłącznie tych komórek, których kolumny oznaczone literą A lub B są wskazane jako istotnie różne.  Kody literowe są widoczne w nagłówkach kolumn, gdy wyniki istotności są łączone; nie są one widoczne w odrębnej tabeli.  Funkcji tej można użyć w celu skupienia się na kilku określonych kategoriach.<p>
+
+<p>Tabele podrzędne w obrębie kolumn są widoczne, gdy wymiar kolumny ma zagnieżdżoną
+specyfikację, taką jak kategoria job w obrębie gender (gender > jobcat) lub gdy istnieje wiele zmiennych jakościowych ułożonych w tym wymiarze (jobcat + gender).
+Można dodatkowo określić, których tabel dotyczy wybór, wpisując numery tabel podrzędnych po każdym kodzie literowym.  Np. wyrażenie
+<i>A01B2</i> wskazuje, że w tabelach podrzędnych 0 i 1 powinny zostać wybrane wyłącznie komórki o istotności A, a w tabeli podrzędnej 2 powinny zostać wybrane wyłącznie komórki o istotności B.  Tabele podrzędne można zidentyfikować w wynikach, gdyż oznaczenie istotności kolumn literami zaczyna się od litery (A) i jest kontynuowane dla każdej tabeli podrzędnej w obrębie tabeli.</p>
+
+<p>W przypadku tabeli zagnieżdżonej najbardziej wewnętrzny wymiar powtarza się, więc pożądaną sytuacją byłoby zastosowanie wyboru do wszystkich zagnieżdżonych tabel podrzędnych. Jednakże, jeśli zmienne są ułożone w kolumnach, litery istotności mogą mieć inne znaczenie w każdej kolumnie — z tego względu pożądane może być zastosowanie wyboru wyłącznie do określonych tabel podrzędnych.
+</p>
+<p class="bullet">&bull; Numeracja tabel podrzędnych rozpoczyna się od 0.  Notacja ta umożliwia odniesienie się do maksymalnie dziesięciu tabel podrzędnych.</p>
+
+<p><i>Poziom istotności:</i> w tabeli może istnieć jeden lub dwa poziomy istotności.  W przypadku dwóch poziomów istotności bardziej istotne wartości są zapisane wielkimi literami, a mniej istotne wartości małymi literami.  Można wybrać oba poziomy lub dowolny z dwóch poziomów.  Jeśli w tabeli istnieje tylko jeden poziom, wybierz opcję Oba lub Górny.</p>
+
+
+<h2>Podrzędne okno dialogowe Działania</h2>
+<p>Wybierz opcję <i>Ukryj wybrane wiersze lub kolumny</i>, aby ukryć te pozycje.
+Opcji tej nie można użyć z żadnym innym działaniem.
+
+<h3>Ustawianie szerokości kolumn</h3>
+<p>W polu Szerokość kolumny wpisz liczbę w punktach, aby zastosować ją do wszystkich wybranych kolumn, lub podaj listę liczb — tyle wartości, ile jest wybranych kolumn — aby określić poszczególne szerokości.  Jeden punkt to 1/72 cala.
+(Wskazówka: aby wyświetlić aktualną szerokość kolumny, uaktywnij tabelę
+podwójnym kliknięciem, kliknij ramkę kolumny i lekko ją przeciągnij).
+<p>Szerokość etykiet wierszy można zmienić poprzez wprowadzenie pozycji etykiet
+wierszy przy użyciu tej samej notacji, którą wykorzystywano przy wyborze wierszy lub kolumn, oraz pojedynczej szerokości lub zestawu szerokości.
+
+<h3>Zastosowanie styli</h3>
+Style można zastosować do komórek danych tabeli i/lub etykiet w wybranym wymiarze.  Wybierz opcję <i>Komórki danych spełniające warunek</i>
+(w głównym oknie dialogowym), aby przetwarzać wyłącznie te komórki danych, które spełniają warunek.
+<p>Warunek to wyrażenie typu prawda/fałsz, w którym wartość komórki jest reprezentowana jako x.  Na przykład,<br>
+<br>x &lt; .05 </br>
+spowoduje wybór wyłącznie tych komórek danych, których wartość jest mniejsza niż 0,05.
+Wyrażenie jest interpretowane jako kod Python.  Można użyć zwykłych operatorów logicznych i porównania. <i>abs(x)</i> to wartość
+bezwzględna komórki.
+<p>
+<i>i</i> oznacza numer wiersza lub kolumny w wymiarze przeciwnym do wymiaru SELECT.  Na przykład<br>
+i % 2 == 1<br>
+(% to operator mod Python) spowoduje wybór kolumn nieparzystych,
+jeśli wybrany wymiar to wiersze.
+<p>
+<i>ii</i> oznacza wiersz lub kolumnę w wymiarze SELECT.  Określenie wyrażenia
+<br>
+ii % 2 == 1
+<br>
+można wykorzystać do zastosowania stylu do wierszy o numerach nieparzystych, jeśli wymiar SELECT to wiersze.
+<p>
+Przy określaniu wartości dziesiętnej zawsze używaj kropki (.), nawet jeśli w twoim środowisku lokalnym standardowym symbolem wykorzystywanym do tego celu jest przecinek.
+<p>
+Wybierz styl tekstu, kolor i kolor tła za pomocą odpowiednich elementów sterujących.  Kolory są reprezentowane przez trzy liczby, jedna dla składowej czerwonej, jedna dla zielonej i jedna dla niebieskiej.  Wartości muszą należeć do przedziału od 0 (brak) do 255 (maksimum).  Np. 0 0 0 to kolor czarny, 255 255 255 to kolor biały, a 255 0 0 to kolor czerwony.  Kolor żółty składa się z równych części składowej czerwonej i zielonej.
+<p>
+Jeśli istnieje funkcja niestandardowa, która ma zostać zastosowana do określonych komórek, wpisz ją tutaj jako<br>
+modulename.functionname<br>
+Szczegółowe informacje na temat zapisu takich funkcji zawiera moduł Python customstylefunctions.py.
+<p>Funkcje niestandardowe mogą mieć parametry.  W celu określenia co najmniej jednego parametru
+podaj listę parametrów w cudzysłowie i zapisz nazwy i wartości parametrów.
+Na przykład,<br>
+customstylefunctions.stripeOddRows2(r=20,g=20,b=200)
+<br>
+spowoduje zastosowanie funkcji stripeOddRows2 w module customstylefunctions.  W wyniku tego wyrażenia otrzymamy trzy parametry, r, g, i b (dla koloru czerwonego, zielonego i niebieskiego) o wartościach odpowiednio 20, 20 i 200.  Zapoznaj się z dokumentacją każdej konkretnej funkcji niestandardowej, aby dowiedzieć się jakie parametry są akceptowane.  Nazwy parametrów muszą być zapisane literami, zgodnie z definicją funkcji.
+<p>Jeśli wartość parametru jest łańcuchowa, należy zapisać ją w pojedynczych cudzysłowach np.<br>
+option='both'
+<br>
+<h3>Szablony TableLook</h3>
+Można zastosować szablon TableLook do całej tabeli, zaznaczając opcję Zastosuj szablon TableLook i określając plik szablonu TableLook.  Pliki szablonów TableLook mają rozszerzenie stt.
+Szablon TableLook jest stosowany do całej tabeli, niezależnie od ustawień w głównym oknie dialogowym.
+<h3>Dobór odpowiednich kolorów</h3>
+Najlepsze kolory dla danej prezentacji zależą od jej przeznaczenia i parametrów urządzenia, na którym będzie wyświetlana.  Zawsze pożądane może być wyszczególnienie określonych wierszy lub kolumn lub typowych i nietypowych wartości.  Najlepsza paleta kolorów może różnić się w zależności od tego, czy prezentacja będzie oglądana na ekranie, drukowana, czy wyświetlana za pomocą rzutnika.  Może być również wymagane zastosowanie palety kolorów narzuconej przez firmę.
+Pomoc oraz koordynaty RGB można uzyskać pod adresem
+<br><u>
+http://www.personal.psu.edu/cab38/ColorBrewer/ColorBrewer.html
+</u>.
+<br>Strona jest poświęcona mapom, ale niektóre z porad mogą być również użyteczne dla tabel (lub dla wykresów).
+<p>Funkcji <i>customstylefunctions.qualitative</i> i <i>customstylefunctions.pastelqualitative</i>
+można użyć do zastosowania palety kolorów do kolumn tabeli.
+<h2>Moduł customstylefunctions</h2>
+Moduł ten, który jest zawarty w komendzie SPSSINC MODIFY TABLES, zawiera wiele funkcji, które rozszerzają zestaw działań widocznych w tym oknie dialogowym. Funkcji tych można użyć za pomocą pola
+<i>Zastosuj funkcję niestandardową</i>.
+Poniżej wymieniono te funkcje.
+Komentarze w module wskazują szczegółowe informacje dotyczące użycia.
+<ul>
+<li>blankTableTriangle</li>
+<li>boldIfEndsWithAtoZLetter</li>  
+<li>colorCrosstabResiduals</li>  
+<li>colorIfEndsWithAtoZLetter</li>
+<li>generic</li>  
+<li>hideFootnotes</li>  
+<li>hideAllFootnotes</li>
+<li>hideNonfinalRows</li>  
+<li>HideRowBasedOnValues</li>
+<li>makeSigCoefsBold</li>  
+<li>moveColumnsToLayers</li>  
+<li>moveColumnsToRows</li>  
+<li>moveLayersToColumns</li>  
+<li>moveLayersToRows</li>  
+<li>moveRowDimension</li>  
+<li>moveRowsToColumns</li>  
+<li>moveRowsToLayers</li>  
+<li>pastelqualitative</li>  
+<li>qualitative</li>  
+<li>reletter</li>
+<li>roundToFormat</li>  
+<li>SetAlignment</li>
+<li>SetCellMargins</li>
+<li>SetDecimalPlaces</li>
+<li>SetLeadingZero</li>
+<li>SetNumericFormat</li>  
+<li>SetNumericFormatAndDecimals</li>  
+<li>SetTwoDecimalPlaces</li>  
+<li>showcorner</li>
+<li>sortTable</li>
+<li>spreadsig</li>
+<li>stripeOddDataRows</li>  
+<li>stripeOddRows</li>  
+<li>stripeOddRows2</li>  
+<li>transpose</li>  
+<li>washColumnBackgrounds</li>  
+<li>washColumns</li>  
+<li>washColumnsBlue</li> 
+</uL>
+<h2>Funkcje dodatkowe</h2>
+<p>
+To okno dialogowe generuje składnię komendy dla komendy rozszerzającej SPSSINC MODIFY TABLES. Aby wyświetlić pomoc dotyczącą
+tej komendy, uruchom następującą komendę:
+</p>
+<p class="codeblock">SPSSINC MODIFY TABLES /HELP.</p>
+W składni komendy można określić listę podtypów umieszczonych oddzielnie w cudzysłowie.
+<h2>Wymagania</h2>
+<p>
+To okno dialogowe wymaga zainstalowania wtyczki integracyjnej dla języka Python oraz komendy rozszerzającej SPSSINC MODIFY TABLES.
+</p>
+<p style="font-size:80%;">Copyright IBM Corp. 1989, 2015</p>
+</body>
+</html>
+

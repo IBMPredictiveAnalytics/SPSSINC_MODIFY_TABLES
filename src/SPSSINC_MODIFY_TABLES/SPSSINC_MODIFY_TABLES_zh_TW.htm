@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>修改表格</title>
+  <style type="text/css">
+
+  <!-- 
+
+  H1 {font-weight:bold; color:#006699; font-size:125%; }
+  H2 {font-weight:bold; color:#006699; font-size:110%; }
+  TABLE {font-size:100%;}
+
+  /* paragraph tags */
+  .step {text-indent: -1.3em; margin-left:1.3em; margin-top: 0px;}
+  .menuselection {margin-left:10px}
+  .bullet {list-style-type: disc;margin-top:12px; margin-left:36px; text-indent:-1em; }
+  .codeblock {background-color: #ffffe6; display:block; margin-left:5px; padding:5px;}
+
+  /* inline tags */
+  .screen {font-weight:bold; color:#408080}                       /*** used refer to on-screen text ***/
+  .name {font-style: italic}                                                       /*** used to tag names, such as variable names, file names, and so forth ***/
+  .runinhead {font-weight: bold} 
+  .superscript {vertical-align:super; font-size:80%}
+  .subscript {vertical-align:sub; font-size:80%}
+
+
+  --> 
+  </style>
+</head>
+<body>
+<h1>修改表格</h1>
+「修改表格」會將顯示樣式及格式化套用至樞紐表。您可以
+<ul>
+<li>控制個別資料格、列及直欄標籤的外觀。
+<li>設定特定直欄的寬度或隱藏它們。
+<li>樞紐表維度。
+</ul>
+您可以在檢視器中選取要對其套用這些修改及範圍的特定類型的表格。
+  <p class="bullet">&bull;此指令不會影響第 19 版中的輕量型表格，因為無法編輯這些表格。此限制不適用於更新版本。
+
+<p>選項規格由下列項目組成：<ul>
+<li>要處理的表格類型。類型是 OMS 表格子類型。</li>
+<li>維度：列或直欄（預設值是直欄）。</li>
+<li>特定列或直欄，其中包括全部。</li>
+<li>應用程式的範圍：前置指令或所有輸出（預設值是前置輸出）。</li>
+<li>選用值特定選取準則，例如資料格值必須大於 2。</li>
+<li>具有顯著性標記的資料格的選擇性選擇</li>
+</ul>
+動作規格為：
+<ul>
+<li>隱藏指定的列或直欄。</li>
+<li>設定直欄的寬度及/或列標籤的寬度。</li>
+<li>將字型樣式設為一般、粗體、斜體或粗斜體。</li>
+<li>設定字型顏色。</li>
+<li>設定背景顏色。</li>
+<li>將自訂動作套用至指定的資料格。</li>
+</ul>
+在主要對話框及「顯著性」子對話框上建立選取規格。在「動作」子對話框上建立「動作」規格。如果您未指定任何動作，或者如果選取準則找不到任何相符的表格，則指令將無聲自動地不執行任何動作。<h2>選取表格、維度及列或直欄</h2>
+
+<p>在<i>表格子類型</i>欄位中輸入 OMS 表格子類型。在表格實例上的大綱中按一下滑鼠右鍵，並選取<i>複製 OMS 子類型</i>，或是從<i>公用程式>OMS ID</i> 中的清單中選取，即可找到子類型。輸入 * 以選取所有子類型。</p>
+<p>
+選擇<i>直欄</i>或<i>列</i>，以判定要處理的表格維度。僅可以為直欄維度設定寬度，但是無論維度為何，都可以設定列標籤寬度。<p>
+在<i>選取的直欄或列</i>中，輸入要處理的特定列或直欄的空白區隔清單，或者輸入 "&lt;&lt;ALL&gt;&gt;" 以處理整個維度（包括引號及大寫 ALL）。可以利用數值位置或用引號中的標籤文字來指定列或直欄。<p>對於<i>文字比對的層次</i>，第一個（最外層）列或直欄是 0。使用負數以從尾端往回計數：-1 是最後一個（最內層）列或直欄。對於標籤文字比對，將文字含括在引號中。比對標籤的觀察值及其確切包含的任何空白。可組合數字與文字規格。例如，<br>
+2 3 "Upper"<br>
+選取列或欄 2、3 及含標籤 "Upper" 的列直欄。如果沒有符合規格的項目，則會予以忽略。會在表格的最內層對列或直欄計數。<p>如果勾選<i>上方的文字是型樣</i>，則上方的每一個文字欄位（除了 &lt;&lt;ALL&gt;&gt; 之外）會被視為正規表示式。例如，<i>"Sig\."</i> 將符合所有包含 <i>Sig.</i> 的標籤文字。否則，標籤的文字與指定的文字相符。作為正規表示式，這將符合 <i>Asympt Sig.</i> 或 <i>Two-tailed Sig.</i>，而不是 <i>Asympt Sig</i>（無句點）。作為純文字，兩者都不相符。可以使用任何 Python 正規表示式。型樣區分大小寫及語言環境。<p>無論勾選框設定為何，類似於數字的項目一律被視為位置。<p>正規表示式的完整說明超出此說明的範圍，但是值得指出的一個特性是能夠建立負表示式。例如，假設您想要選取所有列或直欄，但是以 "Total" 開頭的那些列或直欄除外。可以使用下列項目執行此動作<br>
+<i>"^(?!Total)"</i>
+(^) 開始位於標籤開頭的相符項。僅當下一個文字不是 <i>Total</i> 時，剩餘項目才是 true。<p>正規表示式不能與資料欄寬規格搭配使用。<p>在比對文字時，依預設會使用最內層 (-1) 的文字。輸入更多負數以移出（向上或向左），或者輸入正數以從外部計數。請注意，部分表格在您看到的項目之間具有隱藏的層次，因此可能需要進行一些實驗才能取得正確的層次。層次 1 通常是最外層的可見層次。
+
+<p>勾選<i>列印標籤</i>，以查看所選取維度中的所有標籤。因為許多表格具有隱藏的標籤，請使用此項目來查看完整結構。<p>依預設，會處理緊接之前的程序輸出中指定類型的所有表格。選取<i>所有輸出</i>以處理所有先前執行的程序。
+
+<h2>顯著性子對話框</h2>
+<p>此子對話框會將主要對話框中進行的選擇範圍縮小為符合這裡指定的顯著性準則的資料格。大部分情況下，顯著性準則會與主要對話框上的 "&lt;&lt;ALL>>" 選取規格搭配使用，但是如果已選取子集，則會在該對話框內套用顯著性規格。</p>
+<p class="bullet">&bull; 這個子對話框僅適用於 Statistics 第 24 版或更新版本，以及來自「自訂表格 (CTABLES)」的輸出，其中顯著性標記顯示在主要表格中，並且為簡式（非 APA）類型。</p>
+
+<p><i>顯著性資料格選擇：</i>選擇<i>所有具有顯著性標記的資料格</i>，以選取具有任何顯著性標記的所有資料格。顯著性標記是在資料格中出現的特殊字母代碼</p>
+<p>或者，您也可以指定要透過輸入顯著性型樣來選取的特定顯著性標記。型樣可以是直欄標記的簡式清單。例如，"AB" 只會選取所列出直欄字母 A 或 B 明顯不同的資料格。當顯著性結果合併而非顯示在個別表格中時，會在直欄標頭中顯示字母代碼。當您想要聚焦於幾個特定種類時，可以使用此項。<p>
+
+<p>當直欄維度具有巢狀規格，例如性別（性別 > jobcat）內的工作種類，或者該維度中堆疊多個類別變數（jobcat + 性別）時，會產生跨直欄的子表格。您可以透過在每一個字母代碼後面列出子表格數字，進一步指定選擇套用至哪些子表格。例如，<i>A01B2</i> 指出在子表格 0 與 1 中應該僅選取 A 顯著性資料格，並且在子表格 2 中應該僅選取 B 顯著性代碼。您可以在輸出中識別子表格，因為對於每一個子表格的表格，顯著性直欄字母會從 (A) 重新開始。</p>
+
+<p>在巢狀表格中，最內層的維度會重複，因此您可能想要在所有巢狀子表格中套用選取項目。然而，如果跨直欄堆疊變數，則在每一個子表格中，顯著性字母的意義有所不同，您可能想要希望選擇以僅套用至特定子表格。</p>
+<p class="bullet">&bull; 子表格編號從 0 開始。使用此表示法最多可以參照十個子表格。</p>
+
+<p><i>顯著性層次：</i>一個以上顯著性層次可以顯示在表格中。如果有兩個，則以大寫字母指出更顯著的值，並且使用小寫字母指出不太顯著的值。選取時，您可以指定同時選取兩個層次，或者僅選取其中某個層次。如果表格中只有一個層次，請選擇「兩者」或「上方」。</p>
+
+
+<h2>動作子對話框</h2>
+<p>勾選<i>隱藏選取的列或直欄</i>，以隱藏這些項目。此選項無法與任何其他動作結合。
+
+<h3>設定欄寬</h3>
+<p>在欄寬欄位中，輸入以磅為單位的數字以套用至所有選取的直欄或數字清單，其值數與所選取的直欄數目相同，從而指定個別直欄。一磅為 1/72 英吋。（提示：若要查看直欄的現行寬度，請按兩下以啟動表格，然後按一下直欄邊框，並稍微拖曳。）<p>可以透過使用與選取列或直欄及單一寬度或寬度集相同的表示法輸入列標籤位置，從而控制列標籤寬度。
+
+<h3>套用樣式</h3>
+樣式可以套用至表格的資料格、所選取維度中的標籤，或兩者。選取<i>條件上的資料格</i>（在主要對話框上），以僅處理符合條件的資料格。<p>條件是 true /false 表示式，其中資料格值表示為 x。例如，<br>
+<br>x &lt; .05 </br>
+將僅選取資料格值小於 .05 的資料格。表示式會解譯為 Python 程式碼。可以使用一般邏輯與比較運算子。<i>abs(x)</i> 是資料格的絕對值。
+<p>
+<i>i</i> 代表 SELECT 維度的相反維度的列或直欄號碼。例如<br>
+i % 2 == 1<br>
+（% 是 Python mod 運算子）會選取編號為奇數的直欄，如果所選取的維度是列。
+<p>
+<i>ii</i> 代表 SELECT 維度中的列或直欄。指定
+<br>
+ii % 2 == 1
+<br>
+可用於將樣式套用至編號為奇數的列，如果 SELECT 維度是列。
+<p>
+指定小數值時，即使在您的語言環境中，逗點是一般小數點符號，也一律使用點 (.)。
+<p>
+使用適當的控制項，選取文字樣式、顏色及背景顏色。顏色會以三個數字表示，一個代表紅色元件，一個代表綠色元件，一個代表藍色元件。這些值必須介於 0（表示無）與 255（表示上限）之間。例如，0 0 0 是黑色，255 255 255 是白色，255 0 0 是紅色。黃色是由相等的紅色與綠色部分組成。
+<p>
+如果您具有套用至指定資料格的自訂函數，請在這裡將它輸入為<br>
+modulename.functionname<br>
+如需如何撰寫此類函數的相關詳細資料及範例，請參閱 Python 模組 customstylefunctions.py。
+<p>自訂函數可以具有參數。若要指定一個以上參數，請使用括弧括住參數清單，並撰寫參數名稱和值。例如，<br>
+customstylefunctions.stripeOddRows2(r=20,g=20,b=200)
+<br>
+將在 customstylefunctions 模組中套用 stripeOddRows2 函數。它將取得三個參數 r、g 及 b（適用於紅色、綠色及藍色），並且值分別為 20、20 及 200。請參閱任何特定自訂函數的說明文件，以瞭解它將接受的參數。參數名稱必須以函數定義中指定的大小寫進行撰寫。
+<p>如果參數值是字串，請將它含括在單引號中，例如<br>
+option='both'
+<br>
+<h3>表格外觀</h3>
+您可以勾選「套用表格外觀」並指定表格外觀檔案，將表格外觀套用至整個表格。表格外觀檔案具有副檔名 stt。無論主要對話框上的設定為何，表格外觀都套用至整個表格。
+<h3>選擇正確顏色</h3>
+簡報的最佳顏色取決於其用途以及將檢視其所在的裝置性質。您可能一律想要強調特定列或直欄，或者您可能想要強調一般值或異常值。您的最佳色系可能會視您要在畫面上檢視、列印或投影而有所不同。或者可能需要公司色系。
+您可以取得建議及 RGB 座標於
+<br><u>
+http://www.personal.psu.edu/cab38/ColorBrewer/ColorBrewer.html
+</u>.
+<br>雖然本網站是關於地圖，但是部分建議對於表格（或您的圖表）而言也很有用。<p>函數 <i>customstylefunctions.qualitative</i> 及 <i>customstylefunctions.pastelqualitative</i> 可用於將這些色系套用至表格的直欄。
+<h2>customstylefunctions 模組</h2>
+此模組隨附於 SPSSINC MODIFY TABLES 指令，其中包含許多函數，可延伸此對話框中明確顯示的動作集，並且可以透過<i>套用自訂函數</i>欄位進行使用。
+以下是這些函數的清單。
+模組中的註解顯示用法詳細資料。
+<ul>
+<li>blankTableTriangle</li>
+<li>boldIfEndsWithAtoZLetter</li>  
+<li>colorCrosstabResiduals</li>  
+<li>colorIfEndsWithAtoZLetter</li>
+<li>generic</li>  
+<li>hideFootnotes</li>  
+<li>hideAllFootnotes</li>
+<li>hideNonfinalRows</li>  
+<li>HideRowBasedOnValues</li>
+<li>makeSigCoefsBold</li>  
+<li>moveColumnsToLayers</li>  
+<li>moveColumnsToRows</li>  
+<li>moveLayersToColumns</li>  
+<li>moveLayersToRows</li>  
+<li>moveRowDimension</li>  
+<li>moveRowsToColumns</li>  
+<li>moveRowsToLayers</li>  
+<li>pastelqualitative</li>  
+<li>qualitative</li>  
+<li>reletter</li>
+<li>roundToFormat</li>  
+<li>SetAlignment</li>
+<li>SetCellMargins</li>
+<li>SetDecimalPlaces</li>
+<li>SetLeadingZero</li>
+<li>SetNumericFormat</li>  
+<li>SetNumericFormatAndDecimals</li>  
+<li>SetTwoDecimalPlaces</li>  
+<li>showcorner</li>
+<li>sortTable</li>
+<li>spreadsig</li>
+<li>stripeOddDataRows</li>  
+<li>stripeOddRows</li>  
+<li>stripeOddRows2</li>  
+<li>transpose</li>  
+<li>washColumnBackgrounds</li>  
+<li>washColumns</li>  
+<li>washColumnsBlue</li> 
+</uL>
+<h2>其他特性</h2>
+<p>
+此對話框會產生 SPSSINC MODIFY TABLES 延伸指令的語法。若要顯示此指令的說明，請執行下列語法：</p>
+<p class="codeblock">SPSSINC MODIFY TABLES /HELP.</p>
+在指令語法中，您可以指定單獨用引號括住的子類型的清單。
+
+<h2>需求</h2>
+<p>
+此對話框需要 Integration Plug-In for Python 及 SPSSINC MODIFY TABLES 延伸指令。</p>
+<p style="font-size:80%;">Copyright IBM Corp. 1989, 2015</p>
+</body>
+</html>
+

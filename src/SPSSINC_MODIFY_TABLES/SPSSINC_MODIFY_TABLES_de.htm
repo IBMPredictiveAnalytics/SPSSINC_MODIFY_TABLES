@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Modifizieren von Tabellen</title>
+  <style type="text/css">
+
+  <!-- 
+
+  H1 {font-weight:bold; color:#006699; font-size:125%; }
+  H2 {font-weight:bold; color:#006699; font-size:110%; }
+  TABLE {font-size:100%;}
+
+  /* paragraph tags */
+  .step {text-indent: -1.3em; margin-left:1.3em; margin-top: 0px;}
+  .menuselection {margin-left:10px}
+  .bullet {list-style-type: disc;margin-top:12px; margin-left:36px; text-indent:-1em; }
+  .codeblock {background-color: #ffffe6; display:block; margin-left:5px; padding:5px;}
+
+  /* inline tags */
+  .screen {font-weight:bold; color:#408080}                       /*** used refer to on-screen text ***/
+  .name {font-style: italic}                                                       /*** used to tag names, such as variable names, file names, and so forth ***/
+  .runinhead {font-weight: bold} 
+  .superscript {vertical-align:super; font-size:80%}
+  .subscript {vertical-align:sub; font-size:80%}
+
+
+  --> 
+  </style>
+</head>
+<body>
+<h1>Tabellen ändern</h1>
+Beim Modifizieren von Tabellen werden Anzeigestile und Formatierung auf Pivot-Tabellen angewendet. Sie haben folgende Möglichkeiten:
+<ul>
+<li>Steuern der Darstellung einzelner Datenzellen sowie Zeilen- und Spaltenbeschriftungen.
+<li>Festlegen der Breite bestimmter Spalten oder Ausblenden dieser Spalten.
+<li>Pivotieren von Tabellendimensionen.
+</ul>
+Sie können im Viewer bestimmte Tabellentypen auswählen, auf die diese Änderungen angewendet werden sollen,
+sowie den Anwendungsumfang festlegen.
+<p class="bullet">&bull;Tabellen im Light-Format in Version 19 sind von diesem Befehl nicht betroffen,
+da sie nicht bearbeitet werden können. Diese Einschränkung gilt nicht für höhere Versionen.
+
+<p>Die Auswahlspezifikation besteht aus folgenden Elementen:
+<ul>
+<li>Die zu verarbeitenden Tabellentypen. Mögliche Typen sind OMS-Tabellenuntertypen.</li>
+<li>Die Dimension: Zeilen oder Spalten (Standardvorgabe: Spalten).</li>
+<li>Die Zeilen bzw. Spalten, einschließlich alle.</li>
+<li>Der Anwendungsumfang: der vorangegangene Befehl oder die gesamte Ausgabe (Standardvorgabe: vorangegangene Ausgabe).</li>
+<li>Optionale wertespezifische Auswahlkriterien, z. B. dass der Zellenwert größer als 2 sein muss.</li>
+<li>Optionale Auswahl von Zellen mit Signifikanzmarkierungen</li>
+</ul>
+Es gibt folgende Aktionspezifikationen:
+<ul>
+<li>Ausblenden der angegebenen Zeilen oder Spalten.</li>
+<li>Festlegen der Breite für Spalten und/oder der Breite der Zeilenbeschriftungen.</li>
+<li>Festlegen der Schriftart auf Normal, Fett, Kursiv oder Fett und Kursiv.</li>
+<li>Feslegen der Schriftfarbe.</li>
+<li>Feslegen der Hintergrundfarbe.</li>
+<li>Anwenden von angepassten Aktionen auf die angegebenen Zellen.</li>
+</ul>
+Auswahlspezifikationen werden im Hauptdialog und im Unterdialog 'Signifikanz' getroffen. Aktionsspezifikationen
+werden im Unterdialog 'Aktionen' vorgenommen. Wenn Sie keine Aktionen angeben oder wenn die Auswahlkriterien
+keine passenden Tabellen finden, bleibt der Befehl ohne Wirkung.
+
+<h2>Auswahl der Tabellen, der Dimension sowie der Zeilen bzw. Spalten</h2>
+
+<p>Geben Sie den OMS-Tabellenuntertyp im Feld <i>Tabellenuntertyp</i> ein.
+Sie können den Untertyp festlegen, indem Sie mit der rechten Maustaste in die Gliederung
+einer Instanz der Tabelle klicken und <i>OMS-Tabellenuntertyp kopieren</i> auswählen
+oder den Untertyp alternativ über die Liste unter <i>Extras>OMS-IDs</i> auswählen.
+Geben Sie * ein, um alle Untertypen auszuwählen.</p>
+<p>
+Wählen Sie <i>Spalten</i> oder <i>Zeilen</i> aus, um die Dimension der zu
+verarbeitenden Tabelle festzulegen. Breiten können nur für die Spaltendimension
+festgelegt werden, aber Zeilenbeschriftungsbreiten können unabhängig von der Dimension
+festgelegt werden.
+<p>
+Geben Sie in <i>Ausgewählte Spalten oder Zeilen</i> eine Liste von durch Leerzeichen getrennten
+Zeilen oder Spalten ein, die verarbeitet werden sollen, oder geben Sie "&lt;&lt;ALL&gt;&gt;" ein,
+um die gesamte Dimension zu verarbeiten (einschließlich Anführungszeichen und ALL in Großschreibung).
+Zeilen bzw. Spalten können durch die numerische Position oder anhand des in Anführungszeichen
+gesetzten Beschriftungstexts angegeben werden.
+<p>Bei <i>Ebene für Beschriftungstextabgleich</i> ist die erste (äußerste) Zeile
+bzw. Spalte 0. Verwenden Sie negative Zahlen, um ausgehend vom Ende rückwärts zu
+zählen: -1 ist die letzte (innerste) Zeile bzw. Spalte.
+Schließen Sie den Text für den Beschriftungstextabgleich in Anführungszeichen ein.
+Achten Sie auf genaue Übereinstimmung der Groß-/Kleinschreibung und der enthaltenen Leerzeichen.
+Numerische Spezifikationen und Textspezifikationen können kombiniert werden. Beispiel:<br>
+2 3 "Größer"<br>
+wählt die Zeilen oder Spalten 2, 3 und eine mit der Beschriftung "Größer" aus. Wenn kein Element mit der
+Spezifikation übereinstimmt, wird sie ignoriert. Die Zeilen bzw. Spalten werden auf der innersten Ebene der Tabelle gezählt.
+<p>Wenn <i>Text oben ist ein Muster'</i> ausgewählt ist, wird jedes Textfeld oben
+(außer &lt;&lt;ALL&gt;&gt;) als regulärer Ausdruck behandelt.
+Beispiel: <i>"Sig\."</i> würde jedem Beschriftungstext entsprechen, der <i>Sig.</i> enthält.
+Andernfalls wird die Beschriftung wörtlich mit dem angegebenen Text abgeglichen.
+Bei einem regulären Ausdruck würde dies <i>Asympt Sig.</i> oder <i>Two-tailed Sig.</i> entsprechen, aber nicht <i>Asympt Sig</i> (kein Punkt).
+Bei einfachem Text bestünde gar keine Übereinstimmung.
+Es können beliebige reguläre Ausdrücke in Python verwendet werden. Bei den Mustern muss die Groß-/Kleinschreibung beachtet werden
+und sie sind länderspezifisch.
+<p>Elemente, die wie Zahlen aussehen, werden unabhängig von der Einstellung des Kontrollkästchens immer als Positionen behandelt.
+<p>Eine vollständige Erläuterung regulärer Ausdrücke würde den Rahmen dieser Hilfeinformationen sprengen,
+aber eine Funktion, auf die hier hingewiesen werden soll, ist die Möglichkeit, einen negativen Ausdruck zu erstellen.
+Angenommen, Sie möchten alle Zeilen oder Spalten auswählen außer denen, die mit "Total" beginnen.
+Dazu können Sie folgenden Ausdruck verwenden: <br>
+<i>"^(?!Total)"</i> Das Winkelzeichen (^) markiert den Beginn des Abgleichs am Anfang der Beschriftung.
+Der übrige Teil ist nur 'true' (wahr), wenn der folgende Text nicht <i>Total</i> ist.
+<p>Reguläre Ausdrücke können nicht mit Spezifikationen zur Datenspaltenbreite verwendet werden.
+
+<p>Beim Textabgleich wird standardmäßig der Text auf der innersten Ebene (-1) verwendet.
+Geben Sie negativere Zahlen ein, um nach außen zu gehen (nach oben oder links) oder positive Zahlen,
+um von außen nach innen zu zählen. Beachten Sie, dass Tabellen auch unsichtbare Ebenen
+zwischen den sichtbaren Ebenen haben können, sodass Sie möglicherweise ein wenig experimentieren müssen,
+bis Sie die richtige Ebene ermitteln. Ebene 1 ist in der Regel die äußerste sichtbare Ebene.
+
+<p>Wählen Sie <i>Beschriftungen ausgeben</i> um alle Beschriftungen in der ausgewählten Dimension anzuzeigen.
+Da viele Tabellen verborgene Beschriftungen enthalten, sollten Sie diese Option verwenden,
+um die vollständige Struktur anzuzeigen.
+<p>Standardmäßig werden alle Tabellen der angegebenen Typen in der unmittelbar vorangehenden
+Prozedurausgabe verarbeitet. Wählen Sie <i>Gesamte Ausgabe</i>, um alle zuvor ausgeführten
+Prozeduren zu verarbeiten.
+
+<h2>Unterdialog 'Signifikanz'</h2>
+<p>Dieser Unterdialog schränkt die im Hauptdialog getroffene Auswahl auf die Zellen ein,
+die die hier angegebenen Signifikanzkriterien erfüllen.
+In den meisten Fällen werden die Signifikanzkriterien mit der Auswahlspezifikation "&lt;&lt;ALL>>" im Hauptdialog verwendet,
+aber wenn dort ein Subset ausgewählt ist, werden die Signifikanzspezifikationen innerhalb dieses Subsets angewendet.
+</p>
+<p class="bullet">&bull; Dieser Unterdialog gilt nur für Statistics Version 24 oder höher und
+für die Ausgabe von benutzerdefinierten Tabellen (CTABLES), bei denen Signifikanzmarkierungen
+in der Haupttabelle angezeigt werden und die den einfachen Typ (nicht APA) haben.</p>
+
+<p><i>Auswahl signifikanter Zellen:</i> Wählen Sie <i>Alle Zellen mit Signifikanzmarkierung</i> aus,
+um alle Zellen mit einer Signifikanzmarkierung auszuwählen. Signifikanzmarker sind spezielle Buchstabencodes,
+die in der Zelle angezeigt werden.</p>
+<p>Alternativ können Sie die auszuwählenden Signifikanzmarkierungen auch durch Eingabe eines Signifikanzmusters festlegen.
+Das Muster kann eine einfache Liste der Spaltenmarkierungen sein.
+Beispielsweise würde "AB" nur Zellen auswählen, in denen Spalten mit den Buchstaben A oder B als signifikant
+unterschiedlich aufgeführt sind. Die Buchstabencodes werden bei der Zusammenführung von Signifikanzergebnissen
+in den Spaltenüberschriften angezeigt und nicht in einer separaten Tabelle.
+Sie können diese Funktion nutzen, wenn Sie sich auf einige wenige Kategorien konzentrieren möchten.<p>
+
+<p>Untertabellen über die Spalten hinweg treten auf, wenn die Spaltendimension eine verschachtelte Spezifikation hat,
+wie z. B. Berufskategorie innerhalb des Geschlechts (gender > jobcat), oder wenn es mehrere kategoriale Variablen gibt,
+die in dieser Dimension gestapelt sind (jobcat + gender).
+Sie können weiter spezifizieren, für welche Untertabellen die Auswahl gilt, indem Sie die Nummern der Untertabellen
+nach jedem Buchstabencode auflisten. Zum Beispiel bedeutet <i>A01B2</i>, dass nur A-signifikante Zellen in den Untertabellen
+0 und 1 und nur B-signifikante Codes in Untertabelle 2 ausgewählt werden sollen. Sie können die Untertabellen in der Ausgabe
+erkennen, da die Spaltenbuchstaben für die Signifikanz für jede Untertabelle bei (A) aus neu beginnen.</p>
+
+<p>In einer verschachtelten Tabelle wiederholt sich die innerste Dimension, sodass Sie wahrscheinlich möchten,
+dass die Auswahl für alle verschachtelten Untertabellen gilt. Wenn die Variablen jedoch über die Spalten hinweg gestapelt
+sind, ist die Bedeutung der Signifikanzbuchstaben in jeder Untertabelle unterschiedlich, und Sie möchten vielleicht,
+dass die Auswahl nur für bestimmte Untertabellen gilt.
+</p>
+<p class="bullet">&bull; Die Untertabellennummerierung beginnt bei 0. Mit dieser Notation können bis zu zehn Untertabellen referenziert werden.</p>
+
+<p><i>Signifikanzniveau:</i> In einer Tabelle können ein oder zwei Signifikanzniveaus angegeben werden.
+Sind es zwei, werden die signifikanteren Werte in Großbuchstaben und die weniger signifikanten in Kleinbuchstaben angegeben.
+Bei der Auswahl können Sie festlegen, dass beide Niveaus oder nur das eine oder das andere ausgewählt werden.
+Wenn die Tabelle nur ein Niveau enthält, wählen Sie 'Beide' oder 'Größer'.</p>
+
+
+<h2>Unterdialogfeld 'Aktionen'</h2>
+<p>Wählen Sie <i>Ausgewählte Zeilen oder Spalten ausblenden</i>, damit diese Elemente nicht mehr angezeigt werden.
+Diese Option kann mit keiner anderen Aktion kombiniert werden.
+
+<h3>Festlegen von Spaltenbreiten</h3>
+<p>Geben Sie in das Feld für die Spaltenbreite eine Zahl in Punkten ein, die für alle ausgewählten Spalten gelten soll,
+oder eine Liste von Zahlen, die so viele Werte enthält, wie Spalten ausgewählt sind, um individuelle Breiten festzulegen.
+Ein Punkt entspricht 1/72 Zoll.
+(Tipp: Um die aktuelle Breite einer Spalte zu sehen, aktivieren Sie die Tabelle mit einem Doppelklick,
+klicken Sie auf einen Spaltenrand und ziehen Sie leicht).
+<p>Die Breite der Zeilenbeschriftung kann durch Eingabe der Position der Zeilenbeschriftung gesteuert werden,
+wobei dieselbe Notation wie bei der Auswahl von Zeilen oder Spalten und einer einzelnen oder mehrerer
+Breitenangaben verwendet wird.
+
+<h3>Anwenden von Stilen</h3>
+Stile können auf die Datenzellen einer Tabelle, die Beschriftungen in der ausgewählten Dimension
+oder auf beide angewendet werden. Wählen Sie <i>Datenzellen nach Bedingung</i> (im Hauptdialog),
+um nur Datenzellen zu verarbeiten, die die Bedingung erfüllen.
+<p>Die Bedingung ist ein Wahr/Falsch-Ausdruck, in dem der Zellenwert als x dargestellt wird. Beispiel:<br>
+<br>x &lt; .05 </br>
+würde nur Datenzellen auswählen, deren Wert kleiner als 0,05 ist.
+Der Ausdruck wird als Python-Code interpretiert. Es können die üblichen logischen und Vergleichsoperatoren
+verwendet werden. <i>abs(x)</i> ist der absolute Wert der Zelle.
+<p>
+<i>i</i> steht für die Zeilen- oder Spaltennummer in der Dimension, die der SELECT-Dimension gegenüberliegt. Beispiel:<br>
+i % 2 == 1<br>
+(% ist der Python-Mod-Operator) Dies würde die ungeraden Spalten auswählen, wenn die ausgewählte Dimension Zeilen sind.
+<p>
+<i>ii</i> steht für die Zeile oder Spalte in der SELECT-Dimension. Die Angabe
+<br>
+ii % 2 == 1
+<br>
+kann verwendet werden, um einen Stil auf die ungeraden Zeilen anzuwenden, wenn die SELECT-Dimension 'Zeilen' ist.
+<p>
+Verwenden Sie immer einen Punkt (.), wenn Sie einen Dezimalwert angeben, auch wenn in Ihrer Ländereinstellung
+das Komma das übliche Symbol für das Dezimaltrennzeichen ist.
+<p>
+Wählen Sie einen Textstil, eine Farbe und eine Hintergrundfarbe mit den entsprechenden Steuerelementen aus.
+Farben werden als drei Zahlen dargestellt, eine für den Rotanteil, eine für den Grün- und eine für den Blauanteil.
+Die Werte müssen zwischen 0 (Ohne) und 255 (Maximum) liegen.
+Beispiele: 0 0 0 ist Schwarz, 255 255 255 ist Weiß und 255 0 0 ist Rot.
+Gelb entsteht durch die Kombination aus gleichen Teilen von Rot und Grün.
+<p>
+Wenn Sie eine benutzerdefinierte Funktion haben, die auf die angegebenen Zellen
+angewendet werden soll, geben Sie sie hier als<br>
+Modulname.Funktionsname<br>
+Im Python-Modul customstylefunctions.py finden Sie Einzelheiten und Beispiele für die Erstellung solcher Funktionen.
+<p>Benutzerdefinierte Funktionen können über Parameter verfügen. Um einen oder mehrere Parameter anzugeben, schließen
+Sie die Parameterliste in Klammern ein und geben die Parameternamen und -werte an.
+Beispiel:<br>
+customstylefunctions.stripeOddRows2(r=20,g=20,b=200)
+<br>
+Dies würde die Funktion stripeOddRows2 im Modul customstylefunctions anwenden.
+Sie erhält drei Parameter - r, g und b (für Rot, Grün und Blau) - mit den Werten 20, 20 bzw. 200.
+In der Dokumentation finden Sie Informationen dazu, welche Parameter die einzelnen
+benutzerdefinierten Funktionen zulassen.
+Parameternamen müssen in Bezug auf die Groß- und Kleinschreibung genau so geschrieben werden,
+wie dies in der Funktionsdefinition angegeben ist.
+<p>Wenn der Parameterwert eine Zeichenfolge ist, schließen Sie ihn in einfache Anführungszeichen ein, z. B.<br>
+option='both'
+<br>
+<h3>Tabellenvorlagen</h3>
+Sie können eine Tabellenvorlage auf die gesamte Tabelle anwenden, indem Sie 'Tabellenvorlage anwenden'
+aktivieren und eine Tabellenvorlagendatei angeben. Tabellenvorlagendateien haben die Erweiterung stt.
+Die Tabellenvorlage gilt für die gesamte Tabelle, unabhängig von den Einstellungen im Hauptdialog.
+<h3>Auswählen der richtigen Farben</h3>
+Welche Farben für eine Darstellung am besten geeignet sind, hängt vom Zweck und
+den Eigenschaften des Geräts ab, auf dem sie angezeigt werden soll. Sie können entweder immer
+bestimmte Zeilen oder Spalten hervorheben oder Sie können typische oder ungewöhnliche Werte betonen.
+Das beste Farbschema hängt davon ab, ob es auf einem Bildschirm angezeigt, gedruckt oder projiziert wird.
+Möglicherweise wird auch ein unternehmensspezifisches Farbschema benötigt.
+Empfehlungen und RGB-Koordinaten erhalten Sie unter
+<br><u>
+http://www.personal.psu.edu/cab38/ColorBrewer/ColorBrewer.html
+</u>.
+<br>Auf dieser Website geht es zwar um Karten, aber einige der Empfehlungen können auch für Tabellen
+(oder für Ihre Diagramme) nützlich sein.
+<p>Die Funktionen <i>customstylefunctions.qualitative</i> und <i>customstylefunctions.pastelqualitative</i>
+können verwendet werden, um diese Farbschemata auf die Spalten einer Tabelle anzuwenden.
+<h2>Modul customstylefunctions</h2>
+Dieses Modul, das im Befehl SPSSINC MODIFY TABLES enthalten ist, bietet viele Funktionen,
+die die in diesem Dialog explizit angezeigten Aktionen erweitern und über das
+Feld <i>Benutzerdefinierte Funktion anwenden</i> verwendet werden können.
+Es folgt eine Liste dieser Funktionen.
+Kommentare im Modul enthalten Details zur Verwendung.
+<ul>
+<li>blankTableTriangle</li>
+<li>boldIfEndsWithAtoZLetter</li>  
+<li>colorCrosstabResiduals</li>  
+<li>colorIfEndsWithAtoZLetter</li>
+<li>generic</li>  
+<li>hideFootnotes</li>  
+<li>hideAllFootnotes</li>
+<li>hideNonfinalRows</li>  
+<li>HideRowBasedOnValues</li>
+<li>makeSigCoefsBold</li>  
+<li>moveColumnsToLayers</li>  
+<li>moveColumnsToRows</li>  
+<li>moveLayersToColumns</li>  
+<li>moveLayersToRows</li>  
+<li>moveRowDimension</li>  
+<li>moveRowsToColumns</li>  
+<li>moveRowsToLayers</li>  
+<li>pastelqualitative</li>  
+<li>qualitative</li>  
+<li>reletter</li>
+<li>roundToFormat</li>  
+<li>SetAlignment</li>
+<li>SetCellMargins</li>
+<li>SetDecimalPlaces</li>
+<li>SetLeadingZero</li>
+<li>SetNumericFormat</li>  
+<li>SetNumericFormatAndDecimals</li>  
+<li>SetTwoDecimalPlaces</li>  
+<li>showcorner</li>
+<li>sortTable</li>
+<li>spreadsig</li>
+<li>stripeOddDataRows</li>  
+<li>stripeOddRows</li>  
+<li>stripeOddRows2</li>  
+<li>transpose</li>  
+<li>washColumnBackgrounds</li>  
+<li>washColumns</li>  
+<li>washColumnsBlue</li> 
+</uL>
+<h2>Weitere Funktionen</h2>
+<p>
+In diesem Dialogfeld wird Syntax für den Erweiterungsbefehl "SPSSINC MODIFY TABLES" generiert. Führen Sie folgende Syntax aus, um Hilfe für diesen Befehl anzuzeigen:
+</p>
+<p class="codeblock">SPSSINC MODIFY TABLES /HELP.</p>
+In der Befehlssyntax können Sie eine Liste mit einzelnen aufgeführten Untertypen angeben.
+<h2>Anforderungen</h2>
+<p>
+Für dieses Dialogfeld sind das Integrations-Plug-in für Python und der Erweiterungsbefehl "SPSSINC MODIFY TABLES" erforderlich.
+</p>
+<p style="font-size:80%;">Copyright IBM Corp. 1989, 2015</p>
+</body>
+</html>
+
