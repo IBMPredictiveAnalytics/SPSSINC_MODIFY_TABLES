@@ -12,7 +12,7 @@
 # format specific rows or columns in a pivot table of given type
 
 
-__version__ = '1.5.3'
+__version__ = '1.5.4'
 __author__ = "SPSS, JKP"
 
 # Note: This module requires at least SPSS 17.0.0
@@ -39,6 +39,7 @@ __author__ = "SPSS, JKP"
 # 25-nov-2015 Support new keywords for CTABLES significance values
 # 31-may-2016 Modify hider function to try fallback only if exception raised (iffy)
 # 07-sep-2021 Python 3 conversion - remove re.locale
+# 31-may-2022 include Notes tables in table types
 
 import spss, SpssClient
 from extension import floatex, _isseq
@@ -125,13 +126,13 @@ def modify(subtype, select=None,  skiplog=True, process="preceding", dimension='
 
     # debugging
         # makes debug apply only to the current thread
-    try:
-        import wingdbstub
-        import threading
-        wingdbstub.Ensure()
-        wingdbstub.debugger.SetDebugThreads({threading.get_ident(): 1})
-    except:
-        pass
+    #try:
+        #import wingdbstub
+        #import threading
+        #wingdbstub.Ensure()
+        #wingdbstub.debugger.SetDebugThreads({threading.get_ident(): 1})
+    #except:
+        #pass
     SpssClient.StartClient()
     try:
         info = NonProcPivotTable("INFORMATION", tabletitle=_("Information"))
@@ -159,7 +160,7 @@ def modify(subtype, select=None,  skiplog=True, process="preceding", dimension='
             item = items.GetItemAt(itemnumber)
             if process == "preceding" and item.GetTreeLevel() <= 1:
                 break
-            if item.GetType() == SpssClient.OutputItemType.PIVOT and\
+            if item.GetType() in [SpssClient.OutputItemType.PIVOT, SpssClient.OutputItemType.NOTE] and\
                (subtype[0] == "*" or "".join(item.GetSubType().lower().split()) in subtype):
                 c.thetable = item.GetSpecificType()
                 if not countinvis:
@@ -369,7 +370,10 @@ class PtColumns(object):
         if self.tlook:
             pt.SetTableLook(self.tlook)
         if self.widths and self.columns and self.columns[0] == '<<ALL>>':
-            pt.SetDataCellWidths(self.widths[0])
+            try:
+                pt.SetDataCellWidths(self.widths[0])
+            except:
+                pass
         self.datacells = pt.DataCellArray()
         #self.datacells = fDataCellArray(pt)
         #self.rowlabelarray = pt.RowLabelArray()
