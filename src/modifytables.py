@@ -40,12 +40,23 @@ __author__ = "SPSS, JKP"
 # 31-may-2016 Modify hider function to try fallback only if exception raised (iffy)
 # 07-sep-2021 Python 3 conversion - remove re.locale
 # 31-may-2022 include Notes tables in table types
+# 06-sep-2022 fix for row width for table with only one row
 
 import spss, SpssClient
 from extension import floatex, _isseq
 import re, functools, inspect, locale, sys
 
 v24ok = int(spss.GetDefaultPlugInVersion()[4:]) >= 240
+# debugging
+        # makes debug apply only to the current thread
+#try:
+    #import wingdbstub
+    #import threading
+    #wingdbstub.Ensure()
+    #wingdbstub.debugger.SetDebugThreads({threading.get_ident(): 1})
+#except:
+    #pass
+
     
     
 class fDataCellArray(object):
@@ -444,7 +455,7 @@ class PtColumns(object):
                 for  roworcol in range(rowsorcols):
                     newwidth = wdict.get(roworcol, None)
                     if not newwidth is None:
-                        labels.SetRowLabelWidthAt(1,roworcol, newwidth)
+                        labels.SetRowLabelWidthAt(0,roworcol, newwidth)   #9/6/2022
         finally:
             pt.SetUpdateScreen(True)
 

@@ -3,7 +3,7 @@ Dialog-Specs: SPSSINC_MODIFY_TABLES.spd
 Command-Specs: SPSSINC_MODIFY_TABLES.xml
 Code-Files: SPSSINC_MODIFY_TABLES.py,modifytables.py,customstylefuncti
  ons.py
-Misc-Files: Hiding.sps,extsyntax.css,testsigspread.sps,SPSSINC_MODIFY_
+Misc-Files: testsigspread.sps,Hiding.sps,extsyntax.css,SPSSINC_MODIFY_
  TABLES.htm,IBMdialogicon.png,testModifyTables.sps,testmodifytablesgar
  ish.sps,testFormatCorr.sps,notices_SPSSINC MODIFY TABLES.txt,markdown
  .html
@@ -13,7 +13,7 @@ Description: This procedure allows you to modify the appearance of dat
  lor or background color. You can also set column widths or the width 
  of row labels and you can hide specified rows or columns.
 Author: IBM SPSS
-Version: 2.0.3
+Version: 2.0.4
 Product-Version: 24
 Date: 10/7/2011
 Product-Version-Maximum: 99
