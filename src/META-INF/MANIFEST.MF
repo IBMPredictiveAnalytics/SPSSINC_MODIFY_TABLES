@@ -1,4 +1,5 @@
 Name: SPSSINC MODIFY TABLES
+Display-Name: Modify Pivot Tables
 Dialog-Specs: SPSSINC_MODIFY_TABLES.spd
 Command-Specs: SPSSINC_MODIFY_TABLES.xml
 Code-Files: SPSSINC_MODIFY_TABLES.py,modifytables.py,customstylefuncti
