@@ -9,10 +9,6 @@
 
 <link rel="stylesheet" type="text/css" href="extsyntax.css" />
 
-
-
-
-
 </head>
 
 <body>
@@ -40,6 +36,12 @@ ROWLABELVALUES=<em>list of widths</em></p>
 <p>/STYLES TEXTSTYLE=REGULAR or BOLD or ITALIC or BOLDITALIC<br/>
 TEXTCOLOR=<em>RGB values</em><br/>
 BACKGROUNDCOLOR=<em>RGB values</em><br/>
+HMLOWCOLOR = <em>RGB values</em><br/>
+HMHIGHCOLOR = <em>RGB values</em><br/>
+USEABS = YES<sup>&#42;&#42;</sup> or NO<br/>
+HMTRANSPARENT = NO<sup>&#42;&#42;</sup> or YES<br/>
+HMSCALE = LINEAR<sup>&#42;&#42;</sup> or SQROOT or SQUARE or QBLEND<br/>
+HMAUTOCOLOR = NO* or YES<br/>
 CUSTOMFUNCTION=&ldquo;<em>module.function</em>&rdquo; &hellip;<br/>
 TLOOK=&ldquo;<em>filespec</em>&rdquo;<br/>
 APPLYTO=BOTH<sup>&#42;&#42;</sup> or LABELS or DATACELLS or <em>True/False expression</em></p>
@@ -181,6 +183,29 @@ for the Red, Green, and Blue components.  Each value must be between 0 (none),
 and 255 (maximum).  For example, <code>255 0 0</code> is red, and <code>255 255 255</code> is white.</p>
 
 <p><strong>BACKGROUNDCOLOR</strong> sets the cell background color using the same RGB triples.</p>
+
+<p>You can set the background colors for the selected cells to be a heatmap
+representing the cell values or use automatic colors.   A heatmap will be produced
+if any of the HM keywords are specified.
+<p>
+<strong>HMLOWCOLOR</strong> and <strong>HIGHCOLOR</strong> specify the RGB color codes for the lowest and highest values.  The background colors for the cell values will be interpolated
+between those values.  If using the heatmap style, consider setting the text color
+and weight to make the values more visible with the varying background colors or using tranparency.</p>
+<p><strong>HMTRANSPARENT</strong> specifies whether the values in the selected cells should
+be hidden so that only the color pattern appears.</p>
+<p><strong>HMAUTOCOLOR</strong> uses 255 255 255 and 17 146 232 if colors are not specified
+or if the low and high colors are equal.</p>
+<p><strong>SCALE</strong> By default, the interpolation is linear between the high and low
+data values in the selected cells.  You can choose to scale the colors using the square root or square
+of the interpolation fraction, which goes from 0 to 1. Using the square root scale
+spreads the low values more than the high values, while the square control spreads the
+high values more than the low values.  You can, alternatively, use <strong>QBLEND</strong>, which attempts to adjust for nonlinearities in human color perception.
+</p>
+<p><strong>USEABS</strong> If YES, the coloring is based on the
+absolute values in the cells.  While this is the better choice in most cases,
+unchecking it will produce distinct colors for positive and negative values.</p>
+
+<p>Heatmap settings override any Cell Background setting except for significance coloring.</p>
 
 <p><strong>APPLYTO</strong> can be LABELS, DATACELLS, or BOTH and determines what the styles are
 applied to.  For labels, the styles are applied according to the LEVEL specification, i.e.,
@@ -450,7 +475,7 @@ there are also functions for pivoting operations and content-dependent hiding.</
 </tr>
 </tbody></table>
 
-<p>&copy; Copyright IBM Corp. 1989, 2014</p>
+<p>&copy; Copyright IBM Corp. Jon K Peck 1989, 2023</p>
 
 </body>
 

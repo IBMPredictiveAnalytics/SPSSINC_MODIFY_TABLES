@@ -2,7 +2,7 @@
 	belongs in the same directory as the syntax html file.
 	It expects the IBMdialogicon.png file to be in the same directory.
 	The stylesheet and icon should be included in each extension bundle.
-	The h1 element gets the IBM dialog as a left border.
+	The h1 element gets the IBM or non-IBM dialog as a left border.
 	The h2 element gets a background of the background color of the
 	syntax chart.  Use h3 for the equivalent without the background.
 */
@@ -61,7 +61,7 @@ tt, code, pre {
 
 h1 { 
    font-size:2.0em;
-	background-image: url(IBMdialogicon.png);
+	background-image: url(defaultdialogicon.png);
    	background-repeat: no-repeat;
 	background-position: left;
 	padding-left: 24px;
