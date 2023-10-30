@@ -12,7 +12,7 @@
 # format specific rows or columns in a pivot table of given type
 
 
-__version__ = '1.5.4'
+__version__ = '1.6.0'
 __author__ = "SPSS, JKP"
 
 # Note: This module requires at least SPSS 17.0.0
@@ -41,10 +41,13 @@ __author__ = "SPSS, JKP"
 # 07-sep-2021 Python 3 conversion - remove re.locale
 # 31-may-2022 include Notes tables in table types
 # 06-sep-2022 fix for row width for table with only one row
+# 21-aug-2023 add heatmap option
 
 import spss, SpssClient
 from extension import floatex, _isseq
-import re, functools, inspect, locale, sys
+import re, functools, inspect, locale, sys, math
+from collections import namedtuple
+cellinfo = namedtuple("cellinfo", ["row", "col", "value"])
 
 v24ok = int(spss.GetDefaultPlugInVersion()[4:]) >= 240
 # debugging
@@ -92,7 +95,9 @@ def modify(subtype, select=None,  skiplog=True, process="preceding", dimension='
            level=-1, hide=False, widths=None, rowlabels=None, rowlabelwidths=None,
            textstyle=None, textcolor=None, bgcolor=None, applyto="both", customfunction=None, 
            printlabels=False, regexp=False, tlook=None, countinvis=True,
-           sigcells=None, siglevels="both"):
+           sigcells=None, siglevels="both",
+           hmlocolor=None, hmhicolor=None, useabs=True, hmscale="linear",
+           hmtransparent=False, hmautocolor=False):
     """Apply a hide or show action to specified columns or rows of the specified subtype or resize columns
 
     subtype is the OMS subtype of the tables to process or a sequence of subtypes
@@ -150,7 +155,7 @@ def modify(subtype, select=None,  skiplog=True, process="preceding", dimension='
         c = PtColumns(select, dimension, level, hide, widths, 
             rowlabels, rowlabelwidths, textstyle, textcolor, bgcolor, applyto, customfunction, 
             printlabels,regexp, tlook,
-            sigcells, siglevels)
+            sigcells, siglevels, hmlocolor, hmhicolor, useabs, hmscale, hmtransparent, hmautocolor)
         
         if sigcells is not None and not v24ok:
             raise ValueError(_("""Significance highlighting requires at least Statistics version 24"""))
@@ -193,7 +198,7 @@ class PtColumns(object):
     def __init__(self, columns, dimension, level, hide,
                  widths, rowlabels, rowlabelwidths, textstyle, textcolor, bgcolor, applyto, customfunction, 
                  printlabels, regexp, tlook,
-                 sigcells, siglevels):
+                 sigcells, siglevels, hmlocolor, hmhicolor, useabs, hmscale, hmtransparent, hmautocolor):
         """columns is a sequence of identifiers of columns to act on.
         It can include positive or negative numbers (or things that can be converted to these) and
         strings that will be matched to the lowest level of the column labels ignoring case.
@@ -217,7 +222,8 @@ class PtColumns(object):
             columns = []
         attributesFromDict(locals())  # copy parameters
         self.encoding = locale.getlocale()[1]
-        self.actionset = any([widths, rowlabelwidths, textstyle, textcolor, bgcolor, customfunction])
+        self.actionset = any([widths, rowlabelwidths, textstyle, textcolor, bgcolor, customfunction])\
+            or hmlocolor or hmhicolor or hmautocolor
         if hide and self.actionset:
             raise ValueError(_("HIDE cannot be combined with other actions"))
         if  not (self.actionset or self.tlook):
@@ -386,16 +392,17 @@ class PtColumns(object):
             except:
                 pass
         self.datacells = pt.DataCellArray()
-        #self.datacells = fDataCellArray(pt)
-        #self.rowlabelarray = pt.RowLabelArray()
         self.rowlabelarray = fRowLabelArray(pt)
-        #self.columnlabelarray = pt.ColumnLabelArray()
         self.columnlabelarray = fColumnLabelArray(pt)
         self.coltablemap = self.buildcolstruc(pt)
 
         self.numdatarows = self.datacells.GetNumRows()
         self.numdatacols = self.datacells.GetNumColumns()
-
+        if self.hmlocolor or self.hmhicolor or self.hmautocolor:
+            self.hm = Heatmap(self.hmlocolor, self.hmhicolor, self.datacells, self.useabs, self.hmscale,
+            self.hmtransparent, self.hmautocolor, self.pt)
+        else:
+            self.hm = None
         if self.dimension == 'columns':
             self.labels = self.columnlabelarray
             rowsorcols = self.labels.GetNumColumns()
@@ -441,7 +448,7 @@ class PtColumns(object):
                     else:
                         if self.widths and not "<<ALL>>" in scset:   #all case is already processed
                             self.datacells.ReSizeColumn(roworcol, wdict[wkey])
-                        if self.actionset:
+                        if self.actionset or self.hm:
                             rc = self.dostyles(roworcol)
                             if rc is False:
                                 break
@@ -456,6 +463,8 @@ class PtColumns(object):
                     newwidth = wdict.get(roworcol, None)
                     if not newwidth is None:
                         labels.SetRowLabelWidthAt(0,roworcol, newwidth)   #9/6/2022
+            if self.hm:
+                self.hm.setcolor()
         finally:
             pt.SetUpdateScreen(True)
 
@@ -634,11 +643,14 @@ Label number: %s.  Table size: %s""")\
                 # - not doing significance formatting or
                 # - doing significance formatting and it should be applied to this cell
                 # Thus sig formatting can suppress formatting that would otherwise be applied
-                if self.checksigcells(row, col):
+                if self.hm:
+                    self.hm.recordcellinfo(row, col, self.datacells.GetUnformattedValueAt(row, col), self.useabs)  # a string
+                if self.checksigcells(row, col): 
                     for f in self.stylecalls:
                         rc = f(self.datacells, row, col, self.numdatarows, self.numdatacols, "datacells",  self)
                         if rc is False:
                             return rc
+
 
     def labelcellstyles(self, roworcol, numlabelrows, numlabelcols):
         """Apply label styles
@@ -666,6 +678,81 @@ Label number: %s.  Table size: %s""")\
                         return rc
             except:
                 pass
+            
+class Heatmap():
+    def __init__(self, locolor, hicolor, datacells, useabs, hmscale, hmtransparent, hmautocolor, pt):
+        if locolor is None and hicolor is None and not hmautocolor:
+            self.hm = False
+            return
+        if locolor is None:
+            locolor = [255, 255, 255]  # white
+        if hicolor is None:
+            hicolor = [17, 146, 232]  # blue
+        if len(locolor) != 3 or len(hicolor) != 3:
+            raise ValueError(_("Heatmap colors must each have three components"))
+        if locolor == hicolor:
+            locolor = [255, 255, 255]
+            hicolor =  [17, 146, 232]
+        attributesFromDict(locals())
+
+        self.rgbrange = [item[1] - item[0] for item in zip(locolor, hicolor)]
+        #self.datalow = None
+        #self.datahi = None
+        self.targets = []
+        self.datamin = sys.float_info.max
+        self.datamax = -sys.float_info.max        
+
+    def recordcellinfo(self, row, col, value, useabs):
+        """Make a list of selected cell coordinates and values
+        
+        useabs indicates whether to use absolute values or not"""
+        
+        try:
+            value = float(value)
+            if useabs:
+                value = abs(value)
+            self.targets.append(cellinfo(row, col, value))
+        except:   # ignore invalid values
+            pass
+        
+    def setdatarange(self):
+        """Find and save the min and max values for the selected data in the table"""
+        
+
+        # find selected cell values min and max
+        # ignore any cells where this can't be computed
+        for v in self.targets:
+            try:                
+                self.datamin = min(v.value, self.datamin)
+                self.datamax = max(v.value, self.datamax)
+            except:
+                pass
+        
+        self.datarange = max(self.datamax - self.datamin, 1e-100)
+
+        
+    def setcolor(self):
+        """set background color for value based on proportion of value in data range
+        
+        row, col is cell location
+        absolute values have been accounted for already"""
+        
+        self.setdatarange()  
+        for cell in self.targets:
+            incr = (cell.value - self.datamin) / self.datarange  # forced positive
+            if self.hmscale == "qblend":
+                rgb = [math.sqrt(self.locolor[i]**2 * (1. - incr) + self.hicolor[i]**2 * incr) for i in range(3)]
+            else:
+                if self.hmscale == "sqroot":
+                    incr = math.sqrt(incr)
+                elif self.hmscale == "square":
+                    incr = incr ** 2
+                rgb = [self.locolor[i] + incr * self.rgbrange[i] for i in range(3)]
+            self.datacells.SetBackgroundColorAt(cell.row, cell.col, RGB(rgb))   # RGB converts to ints
+            if self.hmtransparent:
+                self.datacells.SetTextColorAt(cell.row, cell.col, RGB(rgb))            
+
+        
 def set23(pt):
     """Set pt incompatible if V23 or later
     

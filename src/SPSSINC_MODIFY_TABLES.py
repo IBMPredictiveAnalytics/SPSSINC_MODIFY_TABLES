@@ -20,6 +20,7 @@ __version__ = "1.4.2"
 # history
 # 07-jan-2015 add countinvis keyword
 # 25-nov-2015 add significance keywords
+# 21-aug-2023 add heatmap option
 
 
 from extension import Template, Syntax, processcmd
@@ -28,13 +29,13 @@ import modifytables
 
 # debugging
         # makes debug apply only to the current thread
-try:
-    import wingdbstub
-    import threading
-    wingdbstub.Ensure()
-    wingdbstub.debugger.SetDebugThreads({threading.get_ident(): 1})
-except:
-    pass
+#try:
+    #import wingdbstub
+    #import threading
+    #wingdbstub.Ensure()
+    #wingdbstub.debugger.SetDebugThreads({threading.get_ident(): 1})
+#except:
+    #pass
 
 helptext="""SPSS MODIFY TABLES SUBTYPE=subtypes SELECT=list of columns or rows to operate on
     [PROCESS={PRECEDING* | ALL}
@@ -218,12 +219,20 @@ def Run(args):
         Template("WIDTHS", subc="WIDTHS", ktype="int", var="widths", vallist=(0,), islist=True),
         Template("ROWLABELS", subc="WIDTHS", ktype="str", var="rowlabels", islist=True),
         Template("ROWLABELWIDTHS", subc="WIDTHS", ktype="int", var="rowlabelwidths", islist=True),
+        
         Template("TLOOK", subc="STYLES", ktype="literal", var="tlook"),
         Template("TEXTSTYLE", subc="STYLES", ktype="str", var="textstyle", islist=False),
         Template("TEXTCOLOR", subc="STYLES", ktype="int", var="textcolor", vallist=(0, 255), islist=True),
         Template("BACKGROUNDCOLOR", subc="STYLES", ktype="int", var="bgcolor", vallist=(0, 255), islist=True),
         Template("APPLYTO", subc="STYLES", ktype="literal", var="applyto", islist=False),
         Template("CUSTOMFUNCTION", subc="STYLES", ktype="literal", var="customfunction", islist=True),
+        Template("HMLOWCOLOR", subc="STYLES", ktype="int", var="hmlocolor", vallist=(0, 255), islist=True),
+        Template("HMHIGHCOLOR", subc="STYLES", ktype="int", var="hmhicolor", vallist=(0, 255), islist=True),
+        Template("HMSCALE", subc="STYLES", ktype="str", var="hmscale",
+            vallist=["linear", "sqroot", "square", "qblend"]),
+        Template("HMTRANSPARENT", subc="STYLES", ktype="bool", var="hmtransparent"),
+        Template("HMAUTOCOLOR", subc="STYLES", ktype="bool", var="hmautocolor"), 
+        Template("USEABS", subc="STYLES", ktype="bool", var="useabs"), 
         
         Template("HELP", subc="", ktype="bool")])
 

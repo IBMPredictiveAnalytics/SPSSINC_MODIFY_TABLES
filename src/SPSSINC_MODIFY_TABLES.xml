@@ -4,7 +4,7 @@
 <!--                                                                   -->
 <!-- IBM SPSS Products: Statistics Common                              -->
 <!--                                                                   -->
-<!-- (C) Copyright IBM Corp. 1989, 2020                                -->
+<!-- (C) Copyright IBM Corp. 1989, 2023                                -->
 <!--                                                                   -->
 <!-- US Government Users Restricted Rights - Use, duplication or       -->
 <!-- disclosure restricted by GSA ADP Schedule Contract with IBM       -->
@@ -16,37 +16,30 @@
 	<Subcommand Name="" IsArbitrary="False" Occurrence="Optional">
 		<Parameter Name="SUBTYPE" ParameterType="TokenList"/>
 		<Parameter Name="SELECT" ParameterType="TokenList"/>
-		<Parameter Name="REGEXP" ParameterType="Keyword">
-			<EnumValue Name="YES"/>
-			<EnumValue Name="NO"/>
-		</Parameter>
+		<Parameter Name="REGEXP" ParameterType="Keyword"/>
 		<Parameter Name="DIMENSION" ParameterType="Keyword">
 			<EnumValue Name="COLUMNS"/>
 			<EnumValue Name="ROWS"/>
 		</Parameter>
 		<Parameter Name="LEVEL" ParameterType="Integer"/>
-		<Parameter Name="HIDE" ParameterType="Keyword">
-			<EnumValue Name="TRUE"/>
-			<EnumValue Name="FALSE"/>
-		</Parameter>
+		<Parameter Name="HIDE" ParameterType="Keyword"/>
 		<Parameter Name="PROCESS" ParameterType="Keyword">
 			<EnumValue Name="PRECEDING"/>
 			<EnumValue Name="ALL"/>
 		</Parameter>
-		<Parameter Name="PRINTLABELS" ParameterType="Keyword">
-			<EnumValue Name="TRUE"/>
-			<EnumValue Name="FALSE"/>
-		</Parameter>
+		<Parameter Name="PRINTLABELS" ParameterType="Keyword"/>
 		<Parameter Name="COUNTINVIS" ParameterType="Keyword"/>
 		<Parameter Name="SIGCELLS" ParameterType="Keyword"/>
 		<Parameter Name="SIGLEVELS" ParameterType="Keyword"/>
 		<Parameter Name="SUBTABLES" ParameterType="Integer"/>
 	</Subcommand>
+	
 	<Subcommand Name="WIDTHS">
 		<Parameter Name="WIDTHS" ParameterType="TokenList"/>
 		<Parameter Name="ROWLABELS" ParameterType="TokenList"/>
 		<Parameter Name="ROWLABELWIDTHS" ParameterType="TokenList"/>
 	</Subcommand>
+	
 	<Subcommand Name="STYLES">
 		<Parameter Name="TEXTSTYLE" ParameterType="Keyword">
 			<EnumValue Name="REGULAR"/>
@@ -59,6 +52,12 @@
 		<Parameter Name="APPLYTO" ParameterType="TokenList"/>
 		<Parameter Name="CUSTOMFUNCTION" ParameterType="TokenList"/>
 		<Parameter Name="TLOOK" ParameterType="InputFile"/>
+		<Parameter Name="HMLOWCOLOR" ParameterType="TokenList"/>
+		<Parameter Name="HMHIGHCOLOR" ParameterType="TokenList"/>
+		<Parameter Name="HMTRANSPARENT" ParameterType="Keyword"/>
+		<Parameter Name="USEABS" ParameterType="Keyword"/>
+		<Parameter Name="HMSCALE" ParameterType="Keyword"/>
+		<Parameter Name="HMAUTOCOLOR" ParameterType="Keyword"/>
 	</Subcommand>
 	<Subcommand Name="HELP" Occurrence="Optional"/>
 </Command>
