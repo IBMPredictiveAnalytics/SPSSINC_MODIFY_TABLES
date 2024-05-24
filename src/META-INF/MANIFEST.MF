@@ -11,7 +11,7 @@ Description: This procedure allows you to modify the appearance of dat
  lor or background color. You can also set column widths or the width 
  of row labels and you can hide specified rows or columns.
 Author: Jon K Peck
-Version: 2.0.5
+Version: 2.0.6
 Product-Version: 24
 Date: 8/24/2023
 Product-Version-Maximum: 99
