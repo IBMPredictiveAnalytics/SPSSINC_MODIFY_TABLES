@@ -1,4 +1,5 @@
 Name: SPSSINC_MODIFY_TABLES
+Display-name: Modify Table Appearance
 Dialog-Specs: SPSSINC_MODIFY_TABLES.cfe
 Command-Specs: SPSSINC_MODIFY_TABLES.xml
 Code-Files: modifytables.py,SPSSINC_MODIFY_TABLES.py,customstylefuncti
