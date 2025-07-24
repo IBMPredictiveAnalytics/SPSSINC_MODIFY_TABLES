@@ -2,7 +2,7 @@ Name: SPSSINC_MODIFY_TABLES
 Display-Name: Modify Table Appearance
 Dialog-Specs: SPSSINC_MODIFY_TABLES.cfe
 Command-Specs: SPSSINC_MODIFY_TABLES.xml
-Code-Files: modifytables.py,SPSSINC_MODIFY_TABLES.py,customstylefuncti
+Code-Files: SPSSINC_MODIFY_TABLES.py,modifytables.py,customstylefuncti
  ons.py
 Misc-Files: extsyntax.css,IBMdialogicon.png,notices_SPSSINC MODIFY TAB
  LES.txt,markdown.html
@@ -12,9 +12,10 @@ Description: This procedure allows you to modify the appearance of dat
  lor or background color. You can also set column widths or the width 
  of row labels and you can hide specified rows or columns.
 Author: Jon K Peck
-Version: 2.0.7
+Version: 2.0.8
 Product-Version: 24
 Date: 8/24/2023
 Product-Version-Maximum: 99
 Plugins: Python
 Python-Version: 3
+Translation-Catalogues: 

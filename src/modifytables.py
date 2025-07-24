@@ -42,10 +42,11 @@ __author__ = "SPSS, JKP"
 # 31-may-2022 include Notes tables in table types
 # 06-sep-2022 fix for row width for table with only one row
 # 21-aug-2023 add heatmap option
+# 21-jul-2025 change custom module import for Python 3.13
 
 import spss, SpssClient
 from extension import floatex, _isseq
-import re, functools, inspect, locale, sys, math
+import re, functools, inspect, locale, sys, math, importlib
 from collections import namedtuple
 cellinfo = namedtuple("cellinfo", ["row", "col", "value"])
 
@@ -56,7 +57,7 @@ v24ok = int(spss.GetDefaultPlugInVersion()[4:]) >= 240
     #import wingdbstub
     #import threading
     #wingdbstub.Ensure()
-    #wingdbstub.debugger.SetDebugThreads({threading.get_ident(): 1})
+    ####wingdbstub.debugger.SetDebugThreads({threading.get_ident(): 1})
 #except:
     #pass
 
@@ -809,8 +810,10 @@ def resolvestr(afunc):
         if bf[0] == "__main__":
             customfunction = eval("""sys.modules["__main__"].%s""" % bf[1])
         else:
-            exec("from %s import %s" % (bf[0], bf[1]))
-            customfunction = locals()[bf[1]]
+            #exec("from %s import %s" % (bf[0], bf[1])) # does not work in Python 3.13
+            #customfunction = locals()[bf[1]]
+            themodule = importlib.import_module(bf[0])
+            customfunction = getattr(themodule, bf[1])
         argspec = inspect.getfullargspec(customfunction)[0]
         nargs = len(argspec)
         if nargs < 7 or nargs > 8:
